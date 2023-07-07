@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcryptjs')
 const { setTokenCookie, requireAuth } = require('../../utils/auth.js')
-const { User } = require('../../db/models')
+const { User, Group } = require('../../db/models')
 const { check } = require('express-validator')
 const { handleValidationErrors } = require('../../utils/validation.js')
 
@@ -33,7 +33,11 @@ const validateSignup = [
 ]
 
 router.get('/', async (req, res) => {
-  const users = await User.unscoped().findAll()
+  const users = await User.unscoped().findAll({
+    include: {
+      model: Group
+    }
+  })
 
   res.json(users)
 })
