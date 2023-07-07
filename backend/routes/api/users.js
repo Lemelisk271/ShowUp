@@ -33,7 +33,7 @@ const validateSignup = [
 ]
 
 router.get('/', async (req, res) => {
-  const users = await User.unscoped().findAll({
+  const users = await User.findAll({
     include: {
       model: Group
     }
