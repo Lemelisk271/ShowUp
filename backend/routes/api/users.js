@@ -34,9 +34,19 @@ const validateSignup = [
 
 router.get('/', async (req, res) => {
   const users = await User.findAll({
-    include: {
-      model: Group
-    }
+    include: [
+      {
+        model: Group
+      },
+      {
+        model: Group,
+        as: 'GroupMembership',
+        attributes: ['name'],
+        through: {
+          attributes: []
+        }
+      }
+    ]
   })
 
   res.json(users)
