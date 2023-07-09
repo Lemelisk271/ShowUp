@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { Event, Group, Venue, EventImage } = require('../../db/models')
+const { Event, Group, Venue, EventImage, User } = require('../../db/models')
 
 router.get('/', async (req, res) => {
   const events = await Event.findAll({
@@ -18,6 +18,16 @@ router.get('/', async (req, res) => {
         model: EventImage
       }
     ]
+  })
+
+  res.json(events)
+})
+
+router.get('/users', async (req, res) => {
+  const events = await Event.findAll({
+    include: {
+      model: User
+    }
   })
 
   res.json(events)
