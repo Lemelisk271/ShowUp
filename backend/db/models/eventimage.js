@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Events',
-        key: id
+        key: 'id'
       }
     },
     url: {
