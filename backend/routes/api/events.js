@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { Event, Group, Venue } = require('../../db/models')
+const { Event, Group, Venue, EventImage } = require('../../db/models')
 
 router.get('/', async (req, res) => {
   const events = await Event.findAll({
@@ -13,6 +13,9 @@ router.get('/', async (req, res) => {
       {
         model: Venue,
         attributes: ['address']
+      },
+      {
+        model: EventImage
       }
     ]
   })
