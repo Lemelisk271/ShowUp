@@ -3,54 +3,54 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Group extends Model {
+  class Event extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Group.belongsTo(models.User, {
-        foreignKey: 'organizerId'
+      Event.belongsTo(models.Venue, {
+        foreignKey: 'venueId'
       })
-      Group.belongsToMany(models.User, {
-        as: 'Members',
-        through: models.Membership,
-        foreignKey: 'groupId',
-        otherKey: 'userId'
-      })
-      Group.hasMany(models.Venue, {
-        foreignKey: 'groupId'
-      })
-      Group.hasMany(models.GroupImage, {
-        foreignKey: 'groupId'
-      })
-      Group.hasMany(models.Event, {
+      Event.belongsTo(models.Group, {
         foreignKey: 'groupId'
       })
     }
   }
-  Group.init({
-    organizerId: {
+  Event.init({
+    venueId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'Users',
-        key: 'id'
-      }
+        references: {
+          model: 'Venues',
+          key: 'id'
+        }
+    },
+    groupId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+        references: {
+          model: 'Groups',
+          key: 'id'
+        }
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
-    about: DataTypes.TEXT,
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
     type: {
       type: DataTypes.ENUM('public', 'private'),
-      defaultValue: 'public'
+      defaultValue: 'public',
+      allowNull: false
     },
     capacity: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       validate: {
         isInt: true
       }
@@ -62,19 +62,21 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     startDate: {
-      type: DataTypes.DATEONLY,
-      allowNull: false,
-      defaultValue: Date.now()
+      type: DataTypes.DATE,
+      allowNull: false
     },
-    endDate: DataTypes.DATEONLY
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: false
+    }
   }, {
     sequelize,
-    modelName: 'Group',
+    modelName: 'Event',
     defaultScope: {
       attributes: {
         exclude: ['createdAt', 'updatedAt']
       }
     }
   });
-  return Group;
+  return Event;
 };
