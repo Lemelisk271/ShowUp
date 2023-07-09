@@ -50,7 +50,7 @@ module.exports = {
         description: `This will be a great event!`,
         type: types[Math.floor(Math.random() * 2)],
         capacity: randomInt(100, 2000),
-        price: randomPrice(),
+        price: parseFloat(randomPrice()),
         startDate: new Date(`2023-08-${numText}T12:00:00`),
         endDate: new Date(`2023-08-${numText}T14:00:00`)
       }
