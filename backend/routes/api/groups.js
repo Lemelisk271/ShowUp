@@ -179,7 +179,7 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
 
   if (!group) {
     res.status(404)
-    res.json({message: "Group couldn't be found"})
+    return res.json({message: "Group couldn't be found"})
   }
 
   if (group.organizerId !== req.user.id) {
@@ -202,6 +202,29 @@ router.post('/:groupId/images', requireAuth, async (req, res, next) => {
 
   res.status(201)
   res.json(resObj)
+})
+
+router.put('/:groupId', requireAuth, validateGroup, async (req, res, next) => {
+  const group = await Group.findByPk(req.params.groupId)
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  if (group.organizerId !== req.user.id) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to update the selected group.'}
+    return next(err)
+  }
+
+  group.set(req.body)
+
+  await group.save()
+
+  res.json(group)
 })
 
 module.exports = router
