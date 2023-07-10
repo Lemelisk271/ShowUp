@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
-const { Group, User, GroupImage } = require('../../db/models')
+const { Group, User, GroupImage, Venue } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth.js')
+const { json } = require('sequelize')
 
 router.get('/', async (req, res) => {
   const groups = await Group.findAll({
@@ -82,6 +83,37 @@ router.get('/current', requireAuth, async (req, res) => {
   }
 
   res.json(groupObj)
+})
+
+router.get('/:groupId', async (req, res, next) => {
+  let group = await Group.findByPk(req.params.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Members'
+      },
+      {
+        model: User,
+        as: 'Organizer',
+        attributes: ['id', 'firstName', 'lastName']
+      },
+      {
+        model: Venue
+      }
+    ]
+  })
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  group = group.toJSON()
+
+  group.numMembers = group.Members.length
+  delete group.Members
+
+  res.json(group)
 })
 
 module.exports = router
