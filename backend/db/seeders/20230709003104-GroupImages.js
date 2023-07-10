@@ -12,7 +12,8 @@ if (process.env.NOD_ENV === 'production') {
 const groupImageSeeds = [
   {
     group: 'Seattle AI Society',
-    url: 'https://www.simplilearn.com/ice9/free_resources_article_thumb/Advantages_and_Disadvantages_of_artificial_intelligence.jpg'
+    url: 'https://www.simplilearn.com/ice9/free_resources_article_thumb/Advantages_and_Disadvantages_of_artificial_intelligence.jpg',
+    preview: true
   },
   {
     group: 'Seattle AI Society',
@@ -24,7 +25,8 @@ const groupImageSeeds = [
   },
   {
     group: 'The Eastside RPG & D&D Meetup Group',
-    url: 'https://www.belloflostsouls.net/wp-content/uploads/2021/03/wizard-level-up.png'
+    url: 'https://www.belloflostsouls.net/wp-content/uploads/2021/03/wizard-level-up.png',
+    preview: true
   },
   {
     group: 'The Eastside RPG & D&D Meetup Group',
@@ -36,7 +38,8 @@ const groupImageSeeds = [
   },
   {
     group: 'No FOMO',
-    url: 'https://static01.nyt.com/images/2018/02/08/fashion/01boite1/01boite1-superJumbo.jpg'
+    url: 'https://static01.nyt.com/images/2018/02/08/fashion/01boite1/01boite1-superJumbo.jpg',
+    preview: true
   },
   {
     group: 'No FOMO',
@@ -48,7 +51,8 @@ const groupImageSeeds = [
   },
   {
     group: 'PNW Dev Network',
-    url: 'https://www.zdnet.com/a/img/resize/adcb2eb2cc3f5562f7e80931308e2a08b01947ce/2019/08/19/4a663776-f4a9-4f89-9bee-2d07ee052f5b/istock-1147195672-11.jpg?auto=webp&fit=crop&height=900&width=1200'
+    url: 'https://www.zdnet.com/a/img/resize/adcb2eb2cc3f5562f7e80931308e2a08b01947ce/2019/08/19/4a663776-f4a9-4f89-9bee-2d07ee052f5b/istock-1147195672-11.jpg?auto=webp&fit=crop&height=900&width=1200',
+    preview: true
   },
   {
     group: 'PNW Dev Network',
@@ -60,7 +64,8 @@ const groupImageSeeds = [
   },
   {
     group: 'Seattle Good Food Meetup Group',
-    url: 'https://d1ralsognjng37.cloudfront.net/28b8e4ac-7552-49a5-aab1-76d8aaebd0e2.jpeg'
+    url: 'https://d1ralsognjng37.cloudfront.net/28b8e4ac-7552-49a5-aab1-76d8aaebd0e2.jpeg',
+    preview: true
   },
   {
     group: 'Seattle Good Food Meetup Group',

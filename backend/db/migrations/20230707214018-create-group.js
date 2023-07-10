@@ -32,22 +32,21 @@ module.exports = {
         type: Sequelize.TEXT
       },
       type: {
-        type: Sequelize.ENUM('public', 'private'),
-        defaultValue: 'public'
+        type: Sequelize.ENUM('In person', 'online'),
+        defaultValue: 'In person'
       },
-      capacity: {
-        type: Sequelize.INTEGER
-      },
-      price: {
-        type: Sequelize.DECIMAL(6,2)
-      },
-      startDate: {
-        type: Sequelize.DATEONLY,
+      private: {
+        type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: true
       },
-      endDate: {
-        type: Sequelize.DATEONLY
+      city: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      state: {
+        type: Sequelize.STRING(2),
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

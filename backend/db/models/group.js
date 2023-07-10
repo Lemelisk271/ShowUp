@@ -46,35 +46,29 @@ module.exports = (sequelize, DataTypes) => {
     },
     about: DataTypes.TEXT,
     type: {
-      type: DataTypes.ENUM('public', 'private'),
-      defaultValue: 'public'
+      type: DataTypes.ENUM('In person', 'online'),
+      defaultValue: 'In person'
     },
-    capacity: {
-      type: DataTypes.INTEGER,
-      validate: {
-        isInt: true
-      }
-    },
-    price: {
-      type: DataTypes.DECIMAL(6,2),
-      validate: {
-        isDecimal: true
-      }
-    },
-    startDate: {
-      type: DataTypes.DATEONLY,
+    private: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: Date.now()
+      defaultValue: true
     },
-    endDate: DataTypes.DATEONLY
-  }, {
-    sequelize,
-    modelName: 'Group',
-    defaultScope: {
-      attributes: {
-        exclude: ['createdAt', 'updatedAt']
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    state: {
+      type: DataTypes.STRING(2),
+      validate: {
+        len: [2,2],
+        isAlpha: true,
+        isUppercase: true
       }
     }
+  }, {
+    sequelize,
+    modelName: 'Group'
   });
   return Group;
 };
