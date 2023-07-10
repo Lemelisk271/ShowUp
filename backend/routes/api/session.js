@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 const { check } = require('express-validator')
 const { handleValidationErrors } = require('../../utils/validation.js')
 
-const { setTokenCookie, restoreUser } = require('../../utils/auth.js')
+const { setTokenCookie, requireAuth } = require('../../utils/auth.js')
 const { User } = require('../../db/models')
 
 const validateLogin = [
@@ -54,7 +54,7 @@ router.post('/', validateLogin, async (req, res, next) => {
   })
 })
 
-router.get('/', (req, res) => {
+router.get('/', requireAuth, (req, res) => {
   const { user } = req
   if (user) {
     const safeUser = {
