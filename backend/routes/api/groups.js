@@ -3,7 +3,39 @@ const router = express.Router()
 
 const { Group, User, GroupImage, Venue } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth.js')
-const { json } = require('sequelize')
+const { check } = require('express-validator')
+const { handleValidationErrors } = require('../../utils/validation.js')
+
+const validateGroup = [
+  check('name')
+    .exists({checkFalsy: true})
+    .isLength({max: 60})
+    .withMessage('Name must be 60 characters or less'),
+  check('about')
+    .exists({checkFalsy: true})
+    .isLength({min: 50})
+    .withMessage('About must be 50 characters or more'),
+  check('type')
+    .exists({checkFalsy: true})
+    .isIn(['In person', 'Online'])
+    .withMessage("Type must be 'Online' or 'In person'"),
+  check('private')
+    .exists()
+    .isIn([true, false])
+    .withMessage('Private must be a boolean'),
+  check('city')
+    .exists({checkFalsy: true})
+    .withMessage("City is required"),
+  check('state')
+    .exists({checkFalsy: true})
+    .isLength({
+      min: 2,
+      max: 2
+    })
+    .isUppercase()
+    .withMessage("State is required"),
+  handleValidationErrors
+]
 
 router.get('/', async (req, res) => {
   const groups = await Group.findAll({
@@ -118,6 +150,58 @@ router.get('/:groupId', async (req, res, next) => {
   delete group.Members
 
   res.json(group)
+})
+
+router.post('/', requireAuth, validateGroup, async (req, res, next) => {
+  const groupObj = {
+    organizerId: req.user.id,
+    ...req.body
+  }
+
+  try {
+    const newGroup = Group.build(groupObj)
+    newGroup.validate()
+    await newGroup.save()
+    const group = await Group.findOne({
+      where: {
+        name: req.body.name
+      }
+    })
+    res.status(201)
+    res.json(group)
+  } catch (err) {
+    return next(err)
+  }
+})
+
+router.post('/:groupId/images', requireAuth, async (req, res, next) => {
+  const group = await Group.findByPk(req.params.groupId)
+
+  if (!group) {
+    res.status(404)
+    res.json({message: "Group couldn't be found"})
+  }
+
+  if (group.organizerId !== req.user.id) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to add an image to the selected group.'}
+    return next(err)
+  }
+
+  const { url, preview } = req.body
+
+  const image = await group.createGroupImage({url, preview})
+
+  const resObj = {
+    id: image.id,
+    url: image.url,
+    preview: image.preview
+  }
+
+  res.status(201)
+  res.json(resObj)
 })
 
 module.exports = router
