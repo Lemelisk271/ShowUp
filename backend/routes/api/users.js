@@ -32,26 +32,6 @@ const validateSignup = [
   handleValidationErrors
 ]
 
-router.get('/', async (req, res) => {
-  const users = await User.findAll({
-    include: [
-      {
-        model: Group
-      },
-      {
-        model: Group,
-        as: 'GroupMembership',
-        attributes: ['name'],
-        through: {
-          attributes: []
-        }
-      }
-    ]
-  })
-
-  res.json(users)
-})
-
 router.post('/', validateSignup, async (req, res) => {
   const {email, password, username, firstName, lastName} = req.body
   const hashedPassword = bcrypt.hashSync(password)
