@@ -24,7 +24,7 @@ module.exports = {
         }
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(60),
         allowNull: false,
         unique: true
       },
@@ -32,7 +32,7 @@ module.exports = {
         type: Sequelize.TEXT
       },
       type: {
-        type: Sequelize.ENUM('In person', 'online'),
+        type: Sequelize.ENUM('In person', 'Online'),
         defaultValue: 'In person'
       },
       private: {
