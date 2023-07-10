@@ -93,6 +93,10 @@ router.get('/:groupId', async (req, res, next) => {
         as: 'Members'
       },
       {
+        model: GroupImage,
+        attributes: ['id', 'url', 'preview']
+      },
+      {
         model: User,
         as: 'Organizer',
         attributes: ['id', 'firstName', 'lastName']
