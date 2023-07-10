@@ -21,7 +21,8 @@ module.exports = {
         references: {
           model: 'Venues',
           key: 'id'
-        }
+        },
+        onDelete: 'cascade'
       },
       groupId: {
         type: Sequelize.INTEGER,
@@ -29,7 +30,8 @@ module.exports = {
         references: {
           model: 'Groups',
           key: 'id'
-        }
+        },
+        onDelete: 'cascade'
       },
       name: {
         type: Sequelize.STRING,

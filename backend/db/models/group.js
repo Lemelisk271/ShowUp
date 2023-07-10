@@ -38,7 +38,8 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users',
         key: 'id'
-      }
+      },
+      onDelete: 'cascade'
     },
     name: {
       type: DataTypes.STRING(60),
