@@ -174,4 +174,34 @@ router.post('/', requireAuth, validateGroup, async (req, res, next) => {
   }
 })
 
+router.post('/:groupId/images', requireAuth, async (req, res, next) => {
+  const group = await Group.findByPk(req.params.groupId)
+
+  if (!group) {
+    res.status(404)
+    res.json({message: "Group couldn't be found"})
+  }
+
+  if (group.organizerId !== req.user.id) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to add an image to the selected group.'}
+    return next(err)
+  }
+
+  const { url, preview } = req.body
+
+  const image = await group.createGroupImage({url, preview})
+
+  const resObj = {
+    id: image.id,
+    url: image.url,
+    preview: image.preview
+  }
+
+  res.status(201)
+  res.json(resObj)
+})
+
 module.exports = router
