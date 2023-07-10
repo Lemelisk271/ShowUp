@@ -22,18 +22,20 @@ module.exports = (sequelize, DataTypes) => {
     eventId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-        references: {
-          model: 'Events',
-          key: 'id'
-        }
+      references: {
+        model: 'Events',
+        key: 'id'
+      },
+      onDelete: 'cascade'
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
+      references: {
+        model: 'Users',
+        key: 'id'
+      },
+      onDelete: 'cascade'
     },
     status: {
       type: DataTypes.ENUM('accepted', 'declined', 'undecided'),

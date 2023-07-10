@@ -227,4 +227,26 @@ router.put('/:groupId', requireAuth, validateGroup, async (req, res, next) => {
   res.json(group)
 })
 
+router.delete('/:groupId', requireAuth, async (req, res, next) => {
+  const group = await Group.findByPk(req.params.groupId)
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  if (group.organizerId !== req.user.id) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to delete the selected group.'}
+    return next(err)
+  }
+
+  await group.destroy()
+
+  res.status(200)
+  res.json({message: 'Successfully deleted'})
+})
+
 module.exports = router

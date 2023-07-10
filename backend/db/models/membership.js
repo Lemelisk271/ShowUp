@@ -19,16 +19,18 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users',
         key: 'id'
-      }
+      },
+      onDelete: 'cascade'
     },
     groupId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-        references: {
-          model: 'Groups',
-          key: 'id'
-        }
-    },
+      references: {
+        model: 'Groups',
+        key: 'id'
+      },
+      onDelete: 'cascade'
+  },
     status: {
       type: DataTypes.ENUM('active', 'inactive'),
       defaultValue: 'active'

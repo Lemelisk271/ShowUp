@@ -22,7 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Events',
         key: 'id'
-      }
+      },
+      onDelete: 'cascade'
     },
     url: {
       type: DataTypes.TEXT,
