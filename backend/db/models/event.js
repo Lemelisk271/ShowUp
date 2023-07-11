@@ -29,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
   Event.init({
     venueId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       references: {
         model: 'Venues',
         key: 'id'

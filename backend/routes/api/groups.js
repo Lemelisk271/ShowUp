@@ -67,9 +67,11 @@ const validateVenue = [
 const validateEvent = [
   check('venueId')
     .custom(async (value) => {
-      const venue = await Venue.findByPk(value)
-      if (!venue) {
-        throw new Error("Venue does not exist")
+      if (value !== null) {
+        const venue = await Venue.findByPk(value)
+        if (!venue) {
+          throw new Error("Venue does not exist")
+        }
       }
     }),
   check('name')
