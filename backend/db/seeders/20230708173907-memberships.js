@@ -33,6 +33,8 @@ module.exports = {
       }
     }
 
+    const membership = ['member', 'pending']
+
     users.forEach((user) => {
       let firstNum = Math.floor(Math.random() * groups.length)
       let secondNum = Math.floor(Math.random() * groups.length)
@@ -43,12 +45,12 @@ module.exports = {
       const firstObj = {
         userId: user.id,
         groupId: groups[firstNum].id,
-        status: 'member'
+        status: membership[Math.floor(Math.random() * membership.length)]
       }
       const secondObj = {
         userId: user.id,
         groupId: groups[secondNum].id,
-        status: 'member'
+        status: membership[Math.floor(Math.random() * membership.length)]
       }
       memArray.push(firstObj)
       memArray.push(secondObj)

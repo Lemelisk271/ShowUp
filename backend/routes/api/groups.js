@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { Group, User, GroupImage, Venue, Event, EventImage } = require('../../db/models')
+const { Group, User, GroupImage, Venue, Event, EventImage, Membership } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth.js')
 const { check } = require('express-validator')
 const { handleValidationErrors } = require('../../utils/validation.js')
@@ -517,6 +517,95 @@ router.post('/:groupId/events', requireAuth, validateEvent, async (req, res, nex
     description: event.description,
     startDate: event.startDate,
     endDate: event.endDate
+  }
+
+  res.json(resObj)
+})
+
+router.get('/:groupId/members', async (req, res) => {
+  const group = await Group.findByPk(req.params.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Members',
+        attributes: ['id', 'firstName', 'lastName'],
+        through: {
+          attributes: ['status']
+        }
+      }
+    ]
+  })
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  const resObj = {}
+
+  const memberArray = []
+
+  group.Members.forEach(user => {
+    if (user.Membership.status !== 'pending') {
+      memberArray.push(user)
+    }
+  })
+
+  resObj.Members = memberArray
+
+  if (req.user) {
+    if (req.user.id === group.organizerId) {
+      resObj.Members = group.Members
+    }
+  }
+
+  res.json(resObj)
+})
+
+router.post('/:groupId/membership', requireAuth, async (req, res) => {
+  const group = await Group.findByPk(req.params.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Members'
+      }
+    ]
+  })
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  const members = {}
+
+  group.Members.forEach(user => {
+    members[user.username] = user.Membership.status
+  })
+
+  const memObj = {
+    userId: req.user.id,
+    groupId: group.id
+  }
+
+  if (members[req.user.username] === 'pending') {
+    res.status(400)
+    return res.json({message: "Membership has already been requested"})
+  }
+
+  if (members[req.user.username] === 'member' || members[req.user.username] === 'co-host') {
+    res.status(400)
+    return res.json({message: "User is already a member of the group"})
+  }
+
+  const membership = await Membership.build(memObj)
+  membership.validate()
+  membership.save()
+
+  const resObj = {
+    groupId: membership.groupId,
+    memberId: membership.userId,
+    status: membership.status
   }
 
   res.json(resObj)
