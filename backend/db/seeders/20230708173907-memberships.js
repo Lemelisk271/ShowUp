@@ -25,7 +25,8 @@ module.exports = {
         if (user.id === group.organizerId) {
           const obj = {
             userId: user.id,
-            groupId: group.id
+            groupId: group.id,
+            status: 'co-host'
           }
           memArray.push(obj)
         }
@@ -41,11 +42,13 @@ module.exports = {
       }
       const firstObj = {
         userId: user.id,
-        groupId: groups[firstNum].id
+        groupId: groups[firstNum].id,
+        status: 'member'
       }
       const secondObj = {
         userId: user.id,
-        groupId: groups[secondNum].id
+        groupId: groups[secondNum].id,
+        status: 'member'
       }
       memArray.push(firstObj)
       memArray.push(secondObj)
