@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const { Group, User, GroupImage, Venue } = require('../../db/models')
+const { Group, User, GroupImage, Venue, Event, EventImage } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth.js')
 const { check } = require('express-validator')
 const { handleValidationErrors } = require('../../utils/validation.js')
@@ -365,6 +365,68 @@ router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res, nex
   }
 
   res.json(resObj)
+})
+
+router.get('/:groupId/events', async (req, res) => {
+  const group = await Group.findByPk(req.params.groupId, {
+    include: [
+      {
+        model: Event,
+        attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate'],
+        include: [
+          {
+            model: User
+          },
+          {
+            model: EventImage
+          },
+          {
+            model: Group,
+            attributes: ['id', 'name', 'city', 'state']
+          },
+          {
+            model: Venue,
+            attributes: ['id', 'city', 'state']
+          }
+        ]
+      }
+    ]
+  })
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  const events = group.Events
+
+  const eventList = []
+
+  events.forEach(event => {
+    eventList.push(event.toJSON())
+  })
+
+  eventList.forEach(event => {
+    let count = 0
+    event.Users.forEach(user => {
+      if (user.Attendance.status === 'accepted') {
+        count++
+      }
+    })
+    event.numAttending = count
+    event.EventImages.forEach(image => {
+      if (image.preview === true) {
+        event.previewImage = image.url
+      }
+    })
+    if (!event.previewImage) {
+      event.previewImage = 'No image found'
+    }
+    delete event.EventImages
+    delete event.Users
+  })
+
+  res.json(eventList)
 })
 
 module.exports = router
