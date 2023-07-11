@@ -409,7 +409,7 @@ router.get('/:groupId/events', async (req, res) => {
   eventList.forEach(event => {
     let count = 0
     event.Users.forEach(user => {
-      if (user.Attendance.status === 'accepted') {
+      if (['attendee', 'host', 'co-host'].includes(user.Attendance.status)) {
         count++
       }
     })

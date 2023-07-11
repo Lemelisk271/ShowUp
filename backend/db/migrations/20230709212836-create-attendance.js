@@ -34,9 +34,9 @@ module.exports = {
         onDelete: 'cascade'
       },
       status: {
-        type: Sequelize.ENUM('accepted', 'declined', 'undecided'),
+        type: Sequelize.ENUM('attendee', 'host', 'co-host', 'not attending'),
         allowNull: false,
-        defaultValue: 'undecided'
+        defaultValue: 'attendee'
       },
       createdAt: {
         allowNull: false,

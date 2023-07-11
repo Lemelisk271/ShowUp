@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
   eventList.forEach(event => {
     let count = 0
     event.Users.forEach(user => {
-      if (user.Attendance.status === 'accepted') {
+      if (['attendee', 'host', 'co-host'].includes(user.Attendance.status)) {
         count++
       }
     })
@@ -56,5 +56,7 @@ router.get('/', async (req, res) => {
 
   res.json(resObj)
 })
+
+router.post('/:eventId/images')
 
 module.exports = router
