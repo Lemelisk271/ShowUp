@@ -210,6 +210,13 @@ router.put('/:eventId', requireAuth, validateEvent, async (req, res, next) => {
     return res.json({message: "Event couldn't be found"})
   }
 
+  const venue = await Venue.findByPk(req.body.venueId)
+
+  if (!venue) {
+    res.status(404)
+    return res.json({message: "Venue couldn't be found"})
+  }
+
   const group = await Group.findByPk(event.groupId)
 
   const authUsers = []
@@ -248,6 +255,47 @@ router.put('/:eventId', requireAuth, validateEvent, async (req, res, next) => {
   }
 
   res.json(resObj)
+})
+
+router.delete('/:eventId', requireAuth, async (req, res, next) => {
+  const event = await Event.findByPk(req.params.eventId, {
+    include: [
+      {
+        model: User,
+        through: {
+          where: {
+            status: 'co-host'
+          }
+        }
+      }
+    ]
+  })
+
+  if (!event) {
+    res.status(404)
+    return res.json({message: "Event couldn't be found"})
+  }
+
+  const group = await Group.findByPk(event.groupId)
+
+  const authUsers = []
+
+  if (group.organizerId === req.user.id) {
+    authUsers.push(req.user.username)
+  }
+
+  if (!authUsers.includes(req.user.username)) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to edit this event.'}
+    return next(err)
+  }
+
+  event.destroy()
+
+  res.status(200)
+  res.json({message: "Successfully Deleted"})
 })
 
 module.exports = router
