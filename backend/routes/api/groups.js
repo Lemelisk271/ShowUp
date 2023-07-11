@@ -37,6 +37,33 @@ const validateGroup = [
   handleValidationErrors
 ]
 
+const validateVenue = [
+  check('address')
+    .exists({checkFalsy: true})
+    .withMessage("Street address is required"),
+  check('city')
+    .exists({checkFalsy: true})
+    .withMessage("City is required"),
+  check('state')
+    .exists({checkFalsy: true})
+    .isAlpha()
+    .isLength({
+      min: 2,
+      max: 2
+    })
+    .isUppercase()
+    .withMessage("State is required"),
+  check('lat')
+    .exists({checkFalsy: true})
+    .isDecimal()
+    .withMessage('Latitude is not valid'),
+  check('lng')
+    .exists({checkFalsy: true})
+    .isDecimal()
+    .withMessage('Latitude is not valid'),
+  handleValidationErrors
+]
+
 router.get('/', async (req, res) => {
   const groups = await Group.findAll({
     include: [
@@ -290,6 +317,54 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
   }
 
   res.json(venues)
+})
+
+router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res, next) => {
+  const group = await Group.findByPk(req.params.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Members'
+      }
+    ]
+  })
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  const members = group.Members
+
+  const authUsers = []
+
+  members.forEach(member => {
+    if (member.Membership.status === 'co-host') {
+      authUsers.push(member.username)
+    }
+  })
+
+  if (group.organizerId !== req.user.id && !authUsers.includes(req.user.username)) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to add a venue to the selected group.'}
+    return next(err)
+  }
+
+  const venue = await group.createVenue(req.body)
+
+  const resObj = {
+    id: venue.id,
+    groupId: group.id,
+    address: venue.address,
+    city: venue.city,
+    state: venue.state,
+    lat: venue.lat,
+    lng: venue.lng
+  }
+
+  res.json(resObj)
 })
 
 module.exports = router
