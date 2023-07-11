@@ -23,7 +23,7 @@ module.exports = {
       }
     })
     const seeds = []
-    const status = ['accepted', 'declined', 'undecided']
+    const status = ['attendee', 'host', 'co-host', 'not attending']
 
     for (let i = 0; i < events.length; i++) {
       for (let j = 0; j < users.length; j++) {
@@ -35,7 +35,7 @@ module.exports = {
             const obj = {
               eventId: events[i].id,
               userId: users[j].id,
-              status: status[Math.floor(Math.random() * 3)]
+              status: status[Math.floor(Math.random() * 4)]
             }
             seeds.push(obj)
           }

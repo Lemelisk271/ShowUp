@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
+const { Op } = require('sequelize')
 
 const { Event, Group, Venue, User, EventImage } = require('../../db/models')
+const { requireAuth } = require('../../utils/auth.js')
 
 router.get('/', async (req, res) => {
   const events = await Event.findAll({
@@ -33,7 +35,7 @@ router.get('/', async (req, res) => {
   eventList.forEach(event => {
     let count = 0
     event.Users.forEach(user => {
-      if (user.Attendance.status === 'accepted') {
+      if (['attendee', 'host', 'co-host'].includes(user.Attendance.status)) {
         count++
       }
     })
@@ -64,7 +66,9 @@ router.get('/:eventId', async (req, res) => {
         model: User,
         through: {
           where: {
-            status: 'accepted'
+            status: {
+              [Op.in]: ['attendee', 'host', 'co-host']
+            }
           }
         }
       },
@@ -95,6 +99,54 @@ router.get('/:eventId', async (req, res) => {
   delete jsonEvent.Users
 
   res.json(jsonEvent)
+})
+
+router.post('/:eventId/images', requireAuth, async (req, res, next) => {
+  const event = await Event.findByPk(req.params.eventId, {
+    include: [
+      {
+        model: User,
+        through: {
+          where: {
+            status: {
+              [Op.in]: ['attendee', 'host', 'co-host']
+            }
+          }
+        }
+      }
+    ]
+  })
+
+  if (!event) {
+    res.status(404)
+    return res.json({message: "Event couldn't be found"})
+  }
+
+  const jsonEvent = event.toJSON()
+
+  const authUsers = []
+
+  jsonEvent.Users.forEach(user => {
+    authUsers.push(user.username)
+  })
+
+  if (!authUsers.includes(req.user.username)) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to add an image to the event.'}
+    return next(err)
+  }
+
+  const image = await event.createEventImage(req.body)
+
+  const resObj = {
+    id: image.id,
+    url: image.url,
+    preview: image.preview
+  }
+
+  res.json(resObj)
 })
 
 module.exports = router
