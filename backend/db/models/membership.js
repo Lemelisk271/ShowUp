@@ -32,8 +32,8 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade'
   },
     status: {
-      type: DataTypes.ENUM('active', 'inactive'),
-      defaultValue: 'active'
+      type: DataTypes.ENUM('co-host', 'member', 'pending'),
+      defaultValue: 'pending'
     }
   }, {
     sequelize,
