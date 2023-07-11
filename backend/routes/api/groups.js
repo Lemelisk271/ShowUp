@@ -426,7 +426,11 @@ router.get('/:groupId/events', async (req, res) => {
     delete event.Users
   })
 
-  res.json(eventList)
+  const eventObj = {
+    Events: eventList
+  }
+
+  res.json(eventObj)
 })
 
 module.exports = router
