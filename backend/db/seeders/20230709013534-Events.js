@@ -29,7 +29,7 @@ module.exports = {
         model: Group
       }
     })
-    const types = ['public', 'private']
+    const types = ['In person', 'Online']
 
     venues.forEach((venue, i) =>{
       let num = i + 1

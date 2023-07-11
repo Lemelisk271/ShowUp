@@ -29,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
   Event.init({
     venueId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       references: {
         model: 'Venues',
         key: 'id'
@@ -54,8 +53,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     type: {
-      type: DataTypes.ENUM('public', 'private'),
-      defaultValue: 'public',
+      type: DataTypes.ENUM('In person', 'Online'),
+      defaultValue: 'In person',
       allowNull: false
     },
     capacity: {

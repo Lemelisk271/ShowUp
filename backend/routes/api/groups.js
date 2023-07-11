@@ -64,6 +64,46 @@ const validateVenue = [
   handleValidationErrors
 ]
 
+const validateEvent = [
+  check('venueId')
+    .custom(async (value) => {
+      if (value !== null) {
+        const venue = await Venue.findByPk(value)
+        if (!venue) {
+          throw new Error("Venue does not exist")
+        }
+      }
+    }),
+  check('name')
+    .exists({checkFalsy: true})
+    .isLength({min: 5})
+    .withMessage("Name must be at least 5 characters"),
+  check('type')
+    .exists({checkFalsy: true})
+    .isIn(["Online", "In person"])
+    .withMessage('Type must be Online or In person'),
+  check('capacity')
+    .exists({checkFalsy: true})
+    .isInt()
+    .withMessage("Capacity must be an integer"),
+  check('price')
+    .exists({checkFalsy: true})
+    .isDecimal()
+    .withMessage("Price is invalid"),
+  check('description')
+    .exists({checkFalsy: true})
+    .withMessage("Description is required"),
+  check('startDate')
+    .exists({checkFalsy: true})
+    .isAfter()
+    .withMessage("Start date must be in the future"),
+  check('endDate')
+    .exists({checkFalsy: true})
+    .isAfter(this.startDate)
+    .withMessage("End date is less than start date"),
+  handleValidationErrors
+]
+
 router.get('/', async (req, res) => {
   const groups = await Group.findAll({
     include: [
@@ -431,6 +471,55 @@ router.get('/:groupId/events', async (req, res) => {
   }
 
   res.json(eventObj)
+})
+
+router.post('/:groupId/events', requireAuth, validateEvent, async (req, res, next) => {
+  const group = await Group.findByPk(req.params.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Members'
+      }
+    ]
+  })
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  const authUsers = []
+
+  group.Members.forEach(user => {
+    if (user.Membership.status === 'co-host') {
+      authUsers.push(user.username)
+    }
+  })
+
+  if (group.organizerId !== req.user.id && !authUsers.includes(req.user.username)) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to add a venue to the selected group.'}
+    return next(err)
+  }
+
+  const event = await group.createEvent(req.body)
+
+  const resObj = {
+    id: event.id,
+    groupId: event.groupId,
+    venueId: event.venueId,
+    name: event.name,
+    type: event.type,
+    capacity: event.capacity,
+    price: event.price,
+    description: event.description,
+    startDate: event.startDate,
+    endDate: event.endDate
+  }
+
+  res.json(resObj)
 })
 
 module.exports = router
