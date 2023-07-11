@@ -522,4 +522,40 @@ router.post('/:groupId/events', requireAuth, validateEvent, async (req, res, nex
   res.json(resObj)
 })
 
+router.get('/:groupId/members', async (req, res) => {
+  const group = await Group.findByPk(req.params.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Members',
+        attributes: ['id', 'firstName', 'lastName'],
+        through: {
+          attributes: ['status']
+        }
+      }
+    ]
+  })
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  const resObj = {}
+
+  if (group.organizerId !== req.user.id) {
+    const memberArray = []
+    group.Members.forEach(user => {
+      if (user.Membership.status !== 'pending') {
+        memberArray.push(user)
+      }
+    })
+    resObj.Members = memberArray
+  } else {
+    resObj.Members = group.Members
+  }
+
+  res.json(resObj)
+})
+
 module.exports = router
