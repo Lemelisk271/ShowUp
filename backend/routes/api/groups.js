@@ -119,6 +119,17 @@ const validateMembership = [
   handleValidationErrors
 ]
 
+const validateMemberDelete = [
+  check('memberId')
+  .custom(async (value) => {
+    const user = await User.findByPk(value)
+    if (!user) {
+      throw new Error("User couldn't be found")
+    }
+  }),
+  handleValidationErrors
+]
+
 router.get('/', async (req, res) => {
   const groups = await Group.findAll({
     include: [
@@ -705,6 +716,56 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
   }
 
   res.json(resObj)
+})
+
+router.delete('/:groupId/membership', requireAuth, validateMemberDelete, async (req, res, next) => {
+  const group = await Group.findByPk(req.params.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Organizer'
+      }
+    ]
+  })
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  const membership = await Membership.findOne({
+    where: {
+      [Op.and]: [
+        {
+          userId: req.body.memberId
+        },
+        {
+          groupId: req.params.groupId
+        }
+      ]
+    }
+  })
+
+  if (!membership) {
+    res.status(404)
+    return res.json({message: "Membership does not exist for this User"})
+  }
+
+  const user = await User.findByPk(req.body.memberId)
+
+  const authUsers = [group.Organizer.username, user.username]
+
+  if (!authUsers.includes(req.user.username)) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: "You do not have authorization to delete a member from this group"}
+    return next(err)
+  }
+
+  membership.destroy()
+
+  res.json({message: "Successfully deleted membership from group"})
 })
 
 module.exports = router
