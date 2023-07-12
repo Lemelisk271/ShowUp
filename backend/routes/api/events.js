@@ -3,7 +3,7 @@ const router = express.Router()
 const { Op } = require('sequelize')
 const { check } = require('express-validator')
 
-const { Event, Group, Venue, User, EventImage } = require('../../db/models')
+const { Event, Group, Venue, User, EventImage, Attendance } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth.js')
 const { handleValidationErrors } = require('../../utils/validation.js')
 
@@ -354,6 +354,147 @@ router.get('/:eventId/attendees', async (req, res) => {
   }
 
   res.json(resObj)
+})
+
+router.post('/:eventId/attendance', requireAuth, async(req, res, next) => {
+  const event = await Event.findByPk(req.params.eventId, {
+    include: [
+      {
+        model: User
+      }
+    ]
+  })
+
+  if (!event) {
+    res.status(404)
+    return res.json({message: "Event couldn't be found"})
+  }
+
+  const group = await Group.findByPk(event.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Members'
+      }
+    ]
+  })
+
+  const members = []
+  const pending = []
+  const attending = []
+
+  group.Members.forEach(member => {
+    members.push(member.username)
+  })
+
+  if (!members.includes(req.user.username)) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to attend this event.'}
+    return next(err)
+  }
+
+
+  event.Users.forEach(user => {
+    if (user.Attendance.status === 'pending') {
+      pending.push(user.username)
+    }
+    if (user.Attendance.status === 'attending' || user.Attendance.status === 'waitlist') {
+      attending.push(user.username)
+    }
+  })
+
+  if (pending.includes(req.user.username)) {
+    res.status(400)
+    return res.json({message: "Attendance has already been requested"})
+  }
+
+  if (attending.includes(req.user.username)) {
+    res.status(400)
+    return res.json({message: "User is already an attendee of the event"})
+  }
+
+  const attend = await Attendance.build({eventId: event.id, userId: req.user.id})
+
+  attend.validate()
+
+  attend.save()
+
+  const resObj = {
+    eventId: attend.eventId,
+    userId: attend.userId,
+    status: attend.status
+  }
+
+  res.json(resObj)
+})
+
+router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
+  const event = await Event.findByPk(req.params.eventId, {
+    include: [
+      {
+        model: User
+      }
+    ]
+  })
+
+  if (req.body.status === 'pending') {
+    res.status(400)
+    return res.json({message: "Cannot change an attendance status to pending"})
+  }
+
+  if (!event) {
+    res.status(404)
+    return res.json({message: "Event couldn't be found"})
+  }
+
+  const group = await Group.findByPk(event.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Organizer'
+      },
+      {
+        model: User,
+        as: 'Members'
+      }
+    ]
+  })
+
+  const authUsers = [group.Organizer.username]
+
+  group.Members.forEach(user => {
+    if (user.Membership.status === 'co-host') {
+      authUsers.push(user.username)
+    }
+  })
+
+  if (!authUsers.includes(req.user.username)) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to change this event request.'}
+    return next(err)
+  }
+
+  const attend = await Attendance.findOne({
+    attributes: ['id', 'eventId', 'userId', 'status'],
+    where: {
+      [Op.and]: [{userId: req.body.userId}, {eventId: event.id}]
+    }
+  })
+
+  if (!attend) {
+    res.status(404)
+    res.json({message: "Attendance between the user and the event does not exist"})
+  }
+
+  attend.set({status: req.body.status})
+
+  await attend.save()
+
+  res.json(attend)
 })
 
 module.exports = router

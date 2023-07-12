@@ -1865,6 +1865,7 @@ Request attendance for an event specified by id.
 
     ```json
     {
+      "eventId": 1,
       "userId": 2,
       "status": "pending"
     }
