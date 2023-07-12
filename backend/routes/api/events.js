@@ -497,4 +497,63 @@ router.put('/:eventId/attendance', requireAuth, async (req, res, next) => {
   res.json(attend)
 })
 
+router.delete('/:eventId/attendance', requireAuth, async (req, res, next) => {
+  const event = await Event.findByPk(req.params.eventId, {
+    include: [
+      {
+        model: User
+      }
+    ]
+  })
+
+  if (!event) {
+    res.status(404)
+    return res.json({message: "Event couldn't be found"})
+  }
+
+  const attendees = []
+  const authUsers = []
+
+  event.Users.forEach(user => {
+    attendees.push(user.id)
+    if (user.id === req.body.userId) {
+      authUsers.push(user.username)
+    }
+  })
+
+  if (!attendees.includes(req.body.userId)) {
+    res.status(404)
+    return res.json({message: "Attendance does not exist for this User"})
+  }
+
+  const group = await Group.findByPk(event.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Organizer'
+      }
+    ]
+  })
+
+  authUsers.push(group.Organizer.username)
+
+  if (!authUsers.includes(req.user.username)) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: "Only the User or organizer may delete an Attendance"}
+    return next(err)
+  }
+
+  const attend = await Attendance.findOne({
+    where: {
+      [Op.and]: [{userId: req.body.userId}, {eventId: event.id}]
+    }
+  })
+
+  attend.destroy()
+
+  res.json({message: "Successfully deleted attendance from event"})
+})
+
 module.exports = router
