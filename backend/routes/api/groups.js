@@ -699,7 +699,7 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
 
   const resObj = {
     id: membership.id,
-    groupId: membership.id,
+    groupId: membership.groupId,
     memberId: membership.userId,
     status: membership.status
   }
