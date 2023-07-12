@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { Op } = require('sequelize')
-const { check } = require('express-validator')
+const { check, query } = require('express-validator')
 
 const { Event, Group, Venue, User, EventImage, Attendance } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth.js')
@@ -47,7 +47,72 @@ const validateEvent = [
   handleValidationErrors
 ]
 
-router.get('/', async (req, res) => {
+const validateQuery = [
+  query('page')
+    .optional()
+    .isNumeric()
+    .isFloat({min: 1})
+    .withMessage("Page must be greater than or equal to 1"),
+  query('size')
+    .optional()
+    .isNumeric()
+    .isFloat({min: 1})
+    .withMessage("Size must be greater than or equal to 1"),
+  query('name')
+    .optional()
+    .isString()
+    .isLength({min: 1})
+    .withMessage("Name must be a string"),
+  query('type')
+    .optional()
+    .isIn(["Online", "In person"])
+    .withMessage("Type must be 'Online' or 'In person'"),
+  query('startDate')
+    .optional()
+    .isDate()
+    .isAfter()
+    .withMessage("Start date must be a valid datetime"),
+  handleValidationErrors
+]
+
+router.get('/', validateQuery, async (req, res) => {
+  let { name, type, startDate } = req.query
+
+  let query = {
+    where: {}
+  }
+
+  let page = req.query.page === undefined ? 1 : parseInt(req.query.page)
+
+  let size = req.query.size === undefined ? 20 : parseInt(req.query.size)
+
+  if (page > 10) {
+    page = 10
+  }
+
+  if (size > 20) {
+    size = 20
+  }
+
+  query.limit = size
+  query.offset = size * (page - 1)
+
+  if (req.query.name) {
+    query.where.name = {
+      [Op.substring]: req.query.name
+    }
+  }
+
+  if (req.query.type) {
+    query.where.type = req.query.type
+  }
+
+  if (req.query.startDate) {
+    query.where.startDate = {
+      [Op.gte]: req.query.startDate
+    }
+  }
+
   const events = await Event.findAll({
     attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate'],
     include: [
@@ -65,7 +130,8 @@ router.get('/', async (req, res) => {
         model: Venue,
         attributes: ['id', 'city', 'state']
       }
-    ]
+    ],
+    ...query
   })
 
   const eventList = []
