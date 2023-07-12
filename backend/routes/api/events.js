@@ -3,7 +3,7 @@ const router = express.Router()
 const { Op } = require('sequelize')
 const { check } = require('express-validator')
 
-const { Event, Group, Venue, User, EventImage } = require('../../db/models')
+const { Event, Group, Venue, User, EventImage, Attendance } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth.js')
 const { handleValidationErrors } = require('../../utils/validation.js')
 
@@ -351,6 +351,56 @@ router.get('/:eventId/attendees', async (req, res) => {
 
   if (authUsers.includes(req.user.username)) {
     resObj.Attendees = event.Users
+  }
+
+  res.json(resObj)
+})
+
+router.post('/:eventId/attendance', requireAuth, async(req, res) => {
+  const event = await Event.findByPk(req.params.eventId, {
+    include: [
+      {
+        model: User
+      }
+    ]
+  })
+
+  if (!event) {
+    res.status(404)
+    return res.json({message: "Event couldn't be found"})
+  }
+
+  const pending = []
+  const attending = []
+
+  event.Users.forEach(user => {
+    if (user.Attendance.status === 'pending') {
+      pending.push(user.username)
+    }
+    if (user.Attendance.status === 'attending' || user.Attendance.status === 'waitlist') {
+      attending.push(user.username)
+    }
+  })
+
+  if (pending.includes(req.user.username)) {
+    res.status(400)
+    return res.json({message: "Attendance has already been requested"})
+  }
+
+  if (attending.includes(req.user.username)) {
+    res.status(400)
+    return res.json({message: "User is already an attendee of the event"})
+  }
+
+  const attend = await Attendance.build({eventId: event.id, userId: req.user.id})
+
+  attend.validate()
+
+  attend.save()
+
+  const resObj = {
+    userId: attend.userId,
+    status: attend.status
   }
 
   res.json(resObj)
