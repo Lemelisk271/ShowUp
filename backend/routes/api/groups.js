@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const { Op } = require('sequelize')
 
 const { Group, User, GroupImage, Venue, Event, EventImage, Membership } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth.js')
@@ -101,6 +102,20 @@ const validateEvent = [
     .exists({checkFalsy: true})
     .isAfter(this.startDate)
     .withMessage("End date is less than start date"),
+  handleValidationErrors
+]
+
+const validateMembership = [
+  check('memberId')
+    .custom(async (value) => {
+      const user = await User.findByPk(value)
+      if (!user) {
+        throw new Error("User couldn't be found")
+      }
+    }),
+    check('status')
+      .isIn(['member', 'co-host'])
+      .withMessage("Cannot change a membership status to pending"),
   handleValidationErrors
 ]
 
@@ -604,6 +619,87 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
 
   const resObj = {
     groupId: membership.groupId,
+    memberId: membership.userId,
+    status: membership.status
+  }
+
+  res.json(resObj)
+})
+
+router.put('/:groupId/membership', requireAuth, validateMembership, async (req, res, next) => {
+  const group = await Group.findByPk(req.params.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Organizer'
+      },
+      {
+        model: User,
+        as: 'Members'
+      }
+    ]
+  })
+
+  if (!group) {
+    res.status(404)
+    return res.json({message: "Group couldn't be found"})
+  }
+
+  const organizer = group.Organizer.username
+  const authUsers = []
+  const pendingUsers = []
+
+  group.Members.forEach(user => {
+    if (user.Membership.status === 'co-host') {
+      authUsers.push(user.username)
+    }
+    if (user.Membership.status === 'pending') {
+      pendingUsers.push(user.id)
+    }
+  })
+
+  if (!pendingUsers.includes(req.body.memberId)) {
+    res.status(404)
+    return res.json({message: "Membership between the user and the group does not exist"})
+  }
+
+  if (req.body.status === 'co-host' && (req.user.username !== organizer)) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to change a member to co-host'}
+    return next(err)
+  }
+
+  if ((req.body.status === 'member') && (!authUsers.includes(req.user.username) && (req.user.username !== organizer))) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: "You do not have authorization to change a member's status"}
+    return next(err)
+  }
+
+  const membership = await Membership.findOne({
+    attributes: ['id', 'userId', 'groupId', 'status'],
+    where: {
+      [Op.and]: [
+        {userId: req.body.memberId},
+        {groupId: group.id}
+      ]
+    }
+  })
+
+  const updateObj = {
+    status: req.body.status
+  }
+
+  membership.set(updateObj)
+
+  await membership.save()
+
+  const resObj = {
+    id: membership.id,
+    groupId: membership.id,
     memberId: membership.userId,
     status: membership.status
   }
