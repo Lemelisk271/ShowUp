@@ -38,9 +38,9 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade'
     },
     status: {
-      type: DataTypes.ENUM('attendee', 'host', 'co-host', 'not attending'),
+      type: DataTypes.ENUM('attending', 'waitlist', 'pending'),
       allowNull: false,
-      defaultValue: 'attendee'
+      defaultValue: 'pending'
     }
   }, {
     sequelize,

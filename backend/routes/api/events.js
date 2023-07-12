@@ -77,7 +77,7 @@ router.get('/', async (req, res) => {
   eventList.forEach(event => {
     let count = 0
     event.Users.forEach(user => {
-      if (['attendee', 'host', 'co-host'].includes(user.Attendance.status)) {
+      if (['attending', 'waitlist', 'pending'].includes(user.Attendance.status)) {
         count++
       }
     })
@@ -109,7 +109,7 @@ router.get('/:eventId', async (req, res) => {
         through: {
           where: {
             status: {
-              [Op.in]: ['attendee', 'host', 'co-host']
+              [Op.in]: ['attending', 'waitlist', 'pending']
             }
           }
         }
@@ -151,7 +151,7 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
         through: {
           where: {
             status: {
-              [Op.in]: ['attendee', 'host', 'co-host']
+              [Op.in]: ['attending', 'waitlist', 'pending']
             }
           }
         }
@@ -296,6 +296,64 @@ router.delete('/:eventId', requireAuth, async (req, res, next) => {
 
   res.status(200)
   res.json({message: "Successfully Deleted"})
+})
+
+router.get('/:eventId/attendees', async (req, res) => {
+  const event = await Event.findByPk(req.params.eventId, {
+    include: [
+      {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName'],
+        through: {
+          attributes: ['status']
+        }
+      }
+    ]
+  })
+
+  if (!event) {
+    res.status(404)
+    return res.json({message: "Event couldn't be found"})
+  }
+
+  const group = await Group.findByPk(event.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Organizer'
+      },
+      {
+        model: User,
+        as: 'Members'
+      }
+    ]
+  })
+
+  const authUsers = [group.Organizer.username]
+
+  group.Members.forEach(user => {
+    if (user.Membership.status === 'co-host') {
+      authUsers.push(user.username)
+    }
+  })
+
+  const attendees = []
+
+  event.Users.forEach(user => {
+    if (user.Attendance.status !== 'pending') {
+      attendees.push(user)
+    }
+  })
+
+  const resObj = {
+    Attendees: attendees
+  }
+
+  if (authUsers.includes(req.user.username)) {
+    resObj.Attendees = event.Users
+  }
+
+  res.json(resObj)
 })
 
 module.exports = router
