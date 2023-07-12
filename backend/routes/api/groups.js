@@ -365,7 +365,7 @@ router.get('/:groupId/venues', requireAuth, async (req, res, next) => {
   const authUsers = []
 
   members.forEach(member => {
-    if (member.Membership.status === 'co-host') {
+    if (member.Membership.status === 'co-host' || member.Membership.status === 'host') {
       authUsers.push(member.username)
     }
   })
@@ -405,7 +405,7 @@ router.post('/:groupId/venues', requireAuth, validateVenue, async (req, res, nex
   const authUsers = []
 
   members.forEach(member => {
-    if (member.Membership.status === 'co-host') {
+    if (member.Membership.status === 'co-host' || member.Membership.status === 'host') {
       authUsers.push(member.username)
     }
   })
@@ -475,7 +475,7 @@ router.get('/:groupId/events', async (req, res) => {
   eventList.forEach(event => {
     let count = 0
     event.Users.forEach(user => {
-      if (['attendee', 'host', 'co-host'].includes(user.Attendance.status)) {
+      if (['attending', 'waitlist', 'pending'].includes(user.Attendance.status)) {
         count++
       }
     })
@@ -517,7 +517,7 @@ router.post('/:groupId/events', requireAuth, validateEvent, async (req, res, nex
   const authUsers = []
 
   group.Members.forEach(user => {
-    if (user.Membership.status === 'co-host') {
+    if (user.Membership.status === 'co-host' ||user.Membership.status === 'host') {
       authUsers.push(user.username)
     }
   })
@@ -619,7 +619,7 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
     return res.json({message: "Membership has already been requested"})
   }
 
-  if (members[req.user.username] === 'member' || members[req.user.username] === 'co-host') {
+  if (members[req.user.username] === 'member' || members[req.user.username] === 'co-host' || members[req.user.username] === 'host') {
     res.status(400)
     return res.json({message: "User is already a member of the group"})
   }
@@ -661,7 +661,7 @@ router.put('/:groupId/membership', requireAuth, validateMembership, async (req, 
   const pendingUsers = []
 
   group.Members.forEach(user => {
-    if (user.Membership.status === 'co-host') {
+    if (user.Membership.status === 'co-host' || user.Membership.status === 'host') {
       authUsers.push(user.username)
     }
     if (user.Membership.status === 'pending') {

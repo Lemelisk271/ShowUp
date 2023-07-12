@@ -26,14 +26,14 @@ module.exports = {
           const obj = {
             userId: user.id,
             groupId: group.id,
-            status: 'co-host'
+            status: 'host'
           }
           memArray.push(obj)
         }
       }
     }
 
-    const membership = ['member', 'pending']
+    const membership = ['member', 'pending', 'co-host']
 
     users.forEach((user) => {
       let firstNum = Math.floor(Math.random() * groups.length)
