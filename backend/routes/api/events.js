@@ -161,7 +161,9 @@ router.get('/', validateQuery, async (req, res) => {
   })
 
   const resObj = {
-    Events: eventList
+    Events: eventList,
+    page,
+    size
   }
 
   res.json(resObj)
