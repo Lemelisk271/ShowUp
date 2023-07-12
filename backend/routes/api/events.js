@@ -356,7 +356,7 @@ router.get('/:eventId/attendees', async (req, res) => {
   res.json(resObj)
 })
 
-router.post('/:eventId/attendance', requireAuth, async(req, res) => {
+router.post('/:eventId/attendance', requireAuth, async(req, res, next) => {
   const event = await Event.findByPk(req.params.eventId, {
     include: [
       {
@@ -370,8 +370,31 @@ router.post('/:eventId/attendance', requireAuth, async(req, res) => {
     return res.json({message: "Event couldn't be found"})
   }
 
+  const group = await Group.findByPk(event.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Members'
+      }
+    ]
+  })
+
+  const members = []
   const pending = []
   const attending = []
+
+  group.Members.forEach(member => {
+    members.push(member.username)
+  })
+
+  if (!members.includes(req.user.username)) {
+    const err = new Error('Invalid Authorization')
+    err.status = 403,
+    err.title = 'Invalid Authorization'
+    err.errors = {message: 'You do not have authorization to attend this event.'}
+    return next(err)
+  }
+
 
   event.Users.forEach(user => {
     if (user.Attendance.status === 'pending') {
@@ -399,6 +422,7 @@ router.post('/:eventId/attendance', requireAuth, async(req, res) => {
   attend.save()
 
   const resObj = {
+    eventId: attend.eventId,
     userId: attend.userId,
     status: attend.status
   }
