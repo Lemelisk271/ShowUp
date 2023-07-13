@@ -163,7 +163,11 @@ router.get('/', async (req, res) => {
     delete group.GroupImages
   })
 
-  res.json(groupList)
+  const resObj = {
+    Groups: groupList
+  }
+
+  res.json(resObj)
 })
 
 router.get('/current', requireAuth, async (req, res) => {

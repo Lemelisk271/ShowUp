@@ -44,13 +44,13 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     lat: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.FLOAT,
       validate: {
         isDecimal: true
       }
     },
     lng: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.FLOAT,
       validate: {
         isDecimal: true
       }
