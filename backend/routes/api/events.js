@@ -177,7 +177,7 @@ router.get('/:eventId', async (req, res) => {
         through: {
           where: {
             status: {
-              [Op.in]: ['attending', 'waitlist', 'pending']
+              [Op.in]: ['attending']
             }
           }
         }
@@ -260,18 +260,7 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
 })
 
 router.put('/:eventId', requireAuth, validateEvent, async (req, res, next) => {
-  const event = await Event.findByPk(req.params.eventId, {
-    include: [
-      {
-        model: User,
-        through: {
-          where: {
-            status: 'co-host'
-          }
-        }
-      }
-    ]
-  })
+  const event = await Event.findByPk(req.params.eventId)
 
   if(!event) {
     res.status(404)
@@ -285,7 +274,19 @@ router.put('/:eventId', requireAuth, validateEvent, async (req, res, next) => {
     return res.json({message: "Venue couldn't be found"})
   }
 
-  const group = await Group.findByPk(event.groupId)
+  const group = await Group.findByPk(event.groupId, {
+    include: [
+      {
+        model: User,
+        as: 'Members',
+        through: {
+          where: {
+            status: 'co-host'
+          }
+        }
+      }
+    ]
+  })
 
   const authUsers = []
 
@@ -293,7 +294,7 @@ router.put('/:eventId', requireAuth, validateEvent, async (req, res, next) => {
     authUsers.push(req.user.username)
   }
 
-  event.Users.forEach(user => {
+  group.Members.forEach(user => {
     authUsers.push(user.username)
   })
 
