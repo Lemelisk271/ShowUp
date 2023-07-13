@@ -484,7 +484,7 @@ router.get('/:groupId/events', async (req, res) => {
   eventList.forEach(event => {
     let count = 0
     event.Users.forEach(user => {
-      if (['attending', 'waitlist', 'pending'].includes(user.Attendance.status)) {
+      if (['attending'].includes(user.Attendance.status)) {
         count++
       }
     })
