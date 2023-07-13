@@ -327,10 +327,22 @@ router.put('/:eventId', requireAuth, validateEvent, async (req, res, next) => {
 })
 
 router.delete('/:eventId', requireAuth, async (req, res, next) => {
-  const event = await Event.findByPk(req.params.eventId, {
+  const event = await Event.findByPk(req.params.eventId)
+
+  if (!event) {
+    res.status(404)
+    return res.json({message: "Event couldn't be found"})
+  }
+
+  const group = await Group.findByPk(event.groupId, {
     include: [
       {
         model: User,
+        as: 'Organizer'
+      },
+      {
+        model: User,
+        as: 'Members',
         through: {
           where: {
             status: 'co-host'
@@ -340,18 +352,11 @@ router.delete('/:eventId', requireAuth, async (req, res, next) => {
     ]
   })
 
-  if (!event) {
-    res.status(404)
-    return res.json({message: "Event couldn't be found"})
-  }
+  const authUsers = [group.Organizer.username]
 
-  const group = await Group.findByPk(event.groupId)
-
-  const authUsers = []
-
-  if (group.organizerId === req.user.id) {
-    authUsers.push(req.user.username)
-  }
+  group.Members.forEach(user => {
+    authUsers.push(user.username)
+  })
 
   if (!authUsers.includes(req.user.username)) {
     const err = new Error('Invalid Authorization')
