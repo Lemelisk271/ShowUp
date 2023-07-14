@@ -423,8 +423,10 @@ router.get('/:eventId/attendees', async (req, res) => {
     Attendees: attendees
   }
 
-  if (authUsers.includes(req.user.username)) {
-    resObj.Attendees = event.Users
+  if (req.user) {
+    if (authUsers.includes(req.user.username)) {
+      resObj.Attendees = event.Users
+    }
   }
 
   res.json(resObj)

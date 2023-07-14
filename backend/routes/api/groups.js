@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { Op } = require('sequelize')
 
-const { Group, User, GroupImage, Venue, Event, EventImage, Membership } = require('../../db/models')
+const { Group, User, GroupImage, Venue, Event, EventImage, Membership, Attendance } = require('../../db/models')
 const { requireAuth } = require('../../utils/auth.js')
 const { check } = require('express-validator')
 const { handleValidationErrors } = require('../../utils/validation.js')
@@ -540,6 +540,14 @@ router.post('/:groupId/events', requireAuth, validateEvent, async (req, res, nex
   }
 
   const event = await group.createEvent(req.body)
+
+  const attendObj = {
+    eventId: event.id,
+    userId: req.user.id,
+    status: 'attending'
+  }
+
+  await Attendance.create(attendObj)
 
   const resObj = {
     id: event.id,
