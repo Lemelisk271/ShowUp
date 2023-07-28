@@ -41,6 +41,7 @@ const LoginFormPage = () => {
             onChange={e => setCredential(e.target.value)}
           />
           <label htmlFor="credential">Username or E-Mail</label>
+          {errors.credential && <p className='errors'>{`* ${errors.credential}`}</p>}
         </div>
         <div>
           <input
@@ -50,7 +51,7 @@ const LoginFormPage = () => {
             onChange={e => setPassword(e.target.value)}
           />
           <label htmlFor="password">Password</label>
-          {errors.credential && <p className='errors'>{`* ${errors.credential}`}</p>}
+          {errors.password && <p className='errors'>{`* ${errors.password}`}</p>}
         </div>
         <button>Log In</button>
       </form>
