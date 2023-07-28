@@ -24,11 +24,9 @@ export const login = (user) => async dispatch => {
     },
     body: JSON.stringify(user)
   })
-  if (res.ok) {
-    const data = await res.json()
-    dispatch(setUser(data.user))
-    return res
-  }
+  const data = await res.json()
+  dispatch(setUser(data.user))
+  return res
 }
 
 const initialState = { user: null}
