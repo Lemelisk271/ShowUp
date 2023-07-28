@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { restoreUser } from './store/session'
 
-import SignupFormPage from './components/SignupFormPage'
 import Navigation from './components/Navigation'
 
 function App() {
@@ -28,9 +27,6 @@ function App() {
           <Switch>
             <Route exact path='/'>
               <h1>Home Page</h1>
-            </Route>
-            <Route path='/signup'>
-              <SignupFormPage />
             </Route>
             <Route>
               <h1>Page Not Found</h1>

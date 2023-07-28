@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { signup } from '../../store/session'
+import { useModal } from '../../context/Modal'
 
-const SignupFormPage = () => {
+const SignupFormModal = () => {
   const dispatch = useDispatch()
-  const sessionUser = useSelector(state => state.session.user)
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -13,13 +12,14 @@ const SignupFormPage = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [validationErrors, setValidationErrors] = useState({})
-
-  if (sessionUser) return <Redirect to='/' />
+  const { closeModal } = useModal()
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
     if (password === confirmPassword) {
+      setValidationErrors({})
+
       const user = {
         email,
         username,
@@ -28,12 +28,14 @@ const SignupFormPage = () => {
         password
       }
 
-      return dispatch(signup(user)).catch(async (res) => {
-        const data = await res.json()
-        if (data && data.errors) {
-          setValidationErrors(data.errors)
-        }
-      })
+      return dispatch(signup(user))
+        .then(closeModal)
+        .catch(async (res) => {
+          const data = await res.json()
+          if (data && data.errors) {
+            setValidationErrors(data.errors)
+          }
+        })
     }
 
     return setValidationErrors({
@@ -111,4 +113,4 @@ const SignupFormPage = () => {
   )
 }
 
-export default SignupFormPage
+export default SignupFormModal
