@@ -2,7 +2,6 @@ import { useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../../store/session'
 import { Redirect } from 'react-router-dom'
-import './LoginFormPage.css'
 
 const LoginFormPage = () => {
   const dispatch = useDispatch()
