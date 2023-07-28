@@ -1,17 +1,14 @@
 import { useState } from "react"
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { login } from '../../store/session'
-import { Redirect } from 'react-router-dom'
-import './LoginFormPage.css'
+import { useModal } from '../../context/Modal'
 
-const LoginFormPage = () => {
+const LoginFormModal = () => {
   const dispatch = useDispatch()
-  const sessionUser = useSelector(state => state.session.user)
   const [credential, setCredential] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState('')
-
-  if (sessionUser) return <Redirect to='/' />
+  const { closeModal } = useModal()
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -22,8 +19,9 @@ const LoginFormPage = () => {
       password
     }
 
-    dispatch(login(user)).catch(
-      async (res) => {
+    return dispatch(login(user))
+      .then(closeModal)
+      .catch(async (res) => {
         const data = await res.json()
         if (data && data.errors) setErrors(data.errors)
       }
@@ -32,7 +30,7 @@ const LoginFormPage = () => {
 
   return (
     <div className="login-page">
-      <h1>Login Form</h1>
+      <h1>Log In</h1>
       <form onSubmit={onSubmit}>
         <div>
           <input
@@ -42,6 +40,7 @@ const LoginFormPage = () => {
             onChange={e => setCredential(e.target.value)}
           />
           <label htmlFor="credential">Username or E-Mail</label>
+          {errors.credential && <p className='errors'>{`* ${errors.credential}`}</p>}
         </div>
         <div>
           <input
@@ -51,7 +50,7 @@ const LoginFormPage = () => {
             onChange={e => setPassword(e.target.value)}
           />
           <label htmlFor="password">Password</label>
-          {errors.credential && <p className='errors'>{`* ${errors.credential}`}</p>}
+          {errors.password && <p className='errors'>{`* ${errors.password}`}</p>}
         </div>
         <button>Log In</button>
       </form>
@@ -59,4 +58,4 @@ const LoginFormPage = () => {
   )
 }
 
-export default LoginFormPage
+export default LoginFormModal

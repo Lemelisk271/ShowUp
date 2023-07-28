@@ -1,0 +1,41 @@
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 5px solid black;
+}
+
+.nav-links {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.nav-links li {
+  display: flex;
+  flex-direction: row;
+}
+
+.nav-links li a {
+  padding: 10px;
+  text-decoration: none;
+}
+
+.user-icon {
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 90px;
+  width: 40px;
+  height: 40px;
+  font-size: 25px;
+  color: white;
+  border: none;
+}
+
+.hidden {
+  display: none;
+}
