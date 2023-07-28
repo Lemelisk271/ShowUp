@@ -18,10 +18,4 @@ router.use('/venues', venuesRouter)
 router.use('/group-images', groupImageRouter)
 router.use('/event-images', eventImageRouter)
 
-router.post('test', (req, res) => {
-  res.json({
-    requestBody: req.body
-  })
-})
-
 module.exports = router

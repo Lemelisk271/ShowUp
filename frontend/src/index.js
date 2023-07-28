@@ -5,10 +5,14 @@ import { Provider as ReduxProvider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import configureStore from './store'
 import App from './App';
+import { restoreCSRF, csrfFetch } from './store/csrf'
 
 const store = configureStore()
 
 if (process.env.NODE_ENV !== 'production') {
+  restoreCSRF()
+
+  window.csrfFetch = csrfFetch
   window.store = store
 }
 
