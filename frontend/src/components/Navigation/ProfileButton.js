@@ -36,7 +36,7 @@ const ProfileButton = ({ user }) => {
   return (
     <>
       <button className="user-icon" onClick={openMenu}>
-        <i class="fa-solid fa-user"></i>
+        <i className="fa-solid fa-user"></i>
       </button>
       <ul className={ulClassName} ref={ulRef}>
         <li>{user.username}</li>
