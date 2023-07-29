@@ -34,15 +34,16 @@ const ProfileButton = ({ user }) => {
   }
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : ' hidden')
+  const arrowClassName = "fa-solid" + (showMenu ? " fa-angle-up" : " fa-angle-down")
 
   return (
     <>
       <button className="user-icon" onClick={openMenu}>
-        <i className="fa-solid fa-user"></i>
+        <i className="fa-solid fa-circle-user"></i>
+        <i style={{color: 'lightgrey', fontSize: '30px'}} className={arrowClassName}></i>
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li>
+        <li>Hello, {user.firstName}</li>
         <li>{user.email}</li>
         <li>
           <button onClick={logoutUser}>Log Out</button>

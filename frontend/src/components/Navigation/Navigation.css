@@ -19,16 +19,40 @@ nav img {
 }
 
 .user-icon {
-  background-color: red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 90px;
-  width: 40px;
-  height: 40px;
-  font-size: 25px;
-  color: white;
+  cursor: pointer;
+  font-size: 40px;
+  color: #f64061;
   border: none;
+  background: none;
+}
+
+.user-icon i {
+  padding: 0 5px;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 10px;
+  background-color: white;
+  z-index: 1;
+  list-style-type: none;
+  padding: 5px 10px;
+  border: 1px solid black;
+  font-size: 16px;
+}
+
+.profile-dropdown li {
+  padding: 5px 0;
+}
+
+.profile-dropdown button {
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  border-top: 1px solid black;
+  padding-top: 5px;
 }
 
 .log-buttons button {
