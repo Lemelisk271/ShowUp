@@ -35,6 +35,7 @@
   color: grey;
   box-shadow: 5px 5px 5px grey;
   cursor: not-allowed;
+  width: 90%;
 }
 
 .active-button {
@@ -42,16 +43,24 @@
   color: white;
   box-shadow: 5px 5px 5px black;
   cursor: pointer;
+  width: 90%;
 }
 
 .login-page button {
-  width: 90%;
   height: 40px;
   margin: 10px 0;
   font-weight: bold;
   border-radius: 10px;
 }
 
-#modal-content {
-  border-radius: 20px;
+.demo-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #00515e;
+  width: fit-content;
+}
+
+.demo-button:hover {
+  text-decoration: underline;
 }

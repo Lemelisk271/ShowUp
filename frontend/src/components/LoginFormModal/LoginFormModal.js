@@ -41,6 +41,22 @@ const LoginFormModal = () => {
     )
   }
 
+  const demoLogin = (e) => {
+    e.preventDefault()
+
+    const user = {
+      credential: 'duser',
+      password: 'password'
+    }
+
+    return dispatch(login(user))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json()
+        if (data && data.errors) setErrors(data.errors)
+      })
+  }
+
   return (
     <div className="login-page">
       <h1>Log In</h1>
@@ -71,6 +87,11 @@ const LoginFormModal = () => {
         >
           Log In</button>
       </form>
+      <button
+        className="demo-button"
+        onClick={demoLogin}
+      >
+        Demo User</button>
     </div>
   )
 }
