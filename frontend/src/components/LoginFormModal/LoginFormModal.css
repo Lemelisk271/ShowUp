@@ -1,0 +1,55 @@
+.login-page {
+  width: 40vw;
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-page form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.login-page div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.login-page input {
+  width: 90%;
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid black
+}
+
+.disabled-button {
+  background-color: white;
+  color: grey;
+  box-shadow: 5px 5px 5px grey;
+}
+
+.active-button {
+  background-color: #f64061;
+  color: white;
+  box-shadow: 5px 5px 5px black;
+}
+
+.login-page button {
+  width: 90%;
+  height: 40px;
+  margin: 10px 0;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+#modal-content {
+  border-radius: 20px;
+}

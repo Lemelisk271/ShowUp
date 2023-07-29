@@ -1,3 +1,21 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+nav {
+  height: 100px;
+}
+
+main {
+  height: calc(100vh - 116px);
+  overflow-y: auto;
+}
+
+main h1 {
+  margin: 0;
+}
+
 .errors {
-  color: red
+  color: red;
+  margin: 0;
 }

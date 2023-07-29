@@ -1,26 +1,21 @@
 nav {
   display: flex;
   flex-direction: row;
+  align-items: center;
+}
+
+.nav-items {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 5px solid black;
+  margin: 0 10px;
 }
 
-.nav-links {
-  list-style-type: none;
-  padding: 0;
+nav img {
   display: flex;
-  flex-direction: row;
-}
-
-.nav-links li {
-  display: flex;
-  flex-direction: row;
-}
-
-.nav-links li a {
-  padding: 10px;
-  text-decoration: none;
+  height: 75px;
 }
 
 .user-icon {
@@ -34,6 +29,15 @@ nav {
   font-size: 25px;
   color: white;
   border: none;
+}
+
+.log-buttons button {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .hidden {

@@ -1,17 +1,30 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useDispatch } from 'react-redux'
 import { login } from '../../store/session'
 import { useModal } from '../../context/Modal'
+import './LoginFormModal.css'
 
 const LoginFormModal = () => {
   const dispatch = useDispatch()
   const [credential, setCredential] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState('')
+  const [disableSubmit, setDisableSubmit] = useState(false)
   const { closeModal } = useModal()
+
+  useEffect(() => {
+    if (credential.length < 4 || password.length < 6) {
+      setDisableSubmit(true)
+    } else {
+      setDisableSubmit(false)
+    }
+  }, [credential, password])
 
   const onSubmit = (e) => {
     e.preventDefault()
+
+    if (disableSubmit) return
+
     setErrors({})
 
     const user = {
@@ -33,26 +46,30 @@ const LoginFormModal = () => {
       <h1>Log In</h1>
       <form onSubmit={onSubmit}>
         <div>
+          {errors.credential && <p className='errors'>{`* ${errors.credential}`}</p>}
           <input
             type='text'
             id='credential'
             value={credential}
             onChange={e => setCredential(e.target.value)}
+            placeholder="Username or Email"
           />
-          <label htmlFor="credential">Username or E-Mail</label>
-          {errors.credential && <p className='errors'>{`* ${errors.credential}`}</p>}
         </div>
         <div>
+          {errors.password && <p className='errors'>{`* ${errors.password}`}</p>}
           <input
             type='password'
             id='password'
             value={password}
             onChange={e => setPassword(e.target.value)}
+            placeholder="Password"
           />
-          <label htmlFor="password">Password</label>
-          {errors.password && <p className='errors'>{`* ${errors.password}`}</p>}
         </div>
-        <button>Log In</button>
+        <button
+          disabled={disableSubmit}
+          className={disableSubmit ? "disabled-button" : "active-button"}
+        >
+          Log In</button>
       </form>
     </div>
   )
