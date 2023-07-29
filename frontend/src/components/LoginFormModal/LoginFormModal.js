@@ -2,10 +2,12 @@ import { useState, useEffect } from "react"
 import { useDispatch } from 'react-redux'
 import { login } from '../../store/session'
 import { useModal } from '../../context/Modal'
+import { useHistory } from 'react-router-dom'
 import './LoginFormModal.css'
 
 const LoginFormModal = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const [credential, setCredential] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState('')
@@ -34,6 +36,7 @@ const LoginFormModal = () => {
 
     return dispatch(login(user))
       .then(closeModal)
+      .then(history.push('/'))
       .catch(async (res) => {
         const data = await res.json()
         if (data && data.errors) setErrors(data.errors)

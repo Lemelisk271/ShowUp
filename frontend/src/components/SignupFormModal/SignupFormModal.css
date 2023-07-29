@@ -1,21 +1,14 @@
-.login-page {
+.signup-page {
   width: 40vw;
-  height: 40vh;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 20px 0;
 }
 
-.login-page form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.login-page div {
+.signup-page form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -23,14 +16,22 @@
   width: 100%;
 }
 
-.login-page input {
+.signup-page div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.signup-page input {
   width: 90%;
   margin: 5px;
   padding: 5px;
   border: 1px solid black
 }
 
-.login-page .disabled-button {
+.signup-page .disabled-button {
   background-color: white;
   color: grey;
   box-shadow: 5px 5px 5px grey;
@@ -38,7 +39,7 @@
   width: 90%;
 }
 
-.login-page .active-button {
+.signup-page .active-button {
   background-color: #f64061;
   color: white;
   box-shadow: 5px 5px 5px black;
@@ -46,21 +47,9 @@
   width: 90%;
 }
 
-.login-page button {
+.signup-page button {
   height: 40px;
   margin: 10px 0;
   font-weight: bold;
   border-radius: 10px;
-}
-
-.demo-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #00515e;
-  width: fit-content;
-}
-
-.demo-button:hover {
-  text-decoration: underline;
 }
