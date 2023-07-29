@@ -5,6 +5,7 @@ import OpenModalButton from '../OpenModalButton'
 import LoginFormModal from '../LoginFormModal'
 import SignupFormModal from '../SignupFormModal'
 import './Navigation.css'
+import Showup_logo from '../../images/Showup_logo.png'
 
 const Navigation = ({ isLoaded }) => {
   const sessionUser = useSelector(state => state.session.user)
@@ -13,13 +14,13 @@ const Navigation = ({ isLoaded }) => {
 
   if(sessionUser) {
     sessionLinks = (
-      <li>
+      <div>
         <ProfileButton user={sessionUser} />
-      </li>
+      </div>
     )
   } else {
     sessionLinks = (
-      <li>
+      <div className="log-buttons" >
         <OpenModalButton
           buttonText={'Log In'}
           modalComponent={<LoginFormModal />}
@@ -28,17 +29,17 @@ const Navigation = ({ isLoaded }) => {
           buttonText={'Sign up'}
           modalComponent={<SignupFormModal />}
         />
-      </li>
+      </div>
     )
   }
 
   return (
-    <>
-      <ul className='nav-links'>
-        <li><NavLink exact to='/'>Home</NavLink></li>
+    <div className='nav-items'>
+      <div className='nav-links'>
+        <NavLink exact to='/'><img src={Showup_logo} alt="Showup Logo" /></NavLink>
+      </div>
         {isLoaded && sessionLinks}
-      </ul>
-    </>
+    </div>
   )
 }
 

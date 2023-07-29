@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { signup } from '../../store/session'
 import { useModal } from '../../context/Modal'
+import { useHistory } from 'react-router-dom'
+import './SignupFormModal.css'
 
 const SignupFormModal = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -12,13 +15,37 @@ const SignupFormModal = () => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [validationErrors, setValidationErrors] = useState({})
+  const [disableButton, setDisableButton] = useState(false)
   const { closeModal } = useModal()
+
+  useEffect(() => {
+    setDisableButton(false)
+
+    if (firstName.length === 0) {
+      setDisableButton(true)
+    }
+    if (firstName.length === 0) {
+      setDisableButton(true)
+    }
+    if (username.length < 4) {
+      setDisableButton(true)
+    }
+    if (password.length < 6) {
+      setDisableButton(true)
+    }
+    if (password !== confirmPassword) {
+      setDisableButton(true)
+    }
+
+  }, [email, username, firstName, lastName, password, confirmPassword])
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
     if (password === confirmPassword) {
       setValidationErrors({})
+
+      if (disableButton) return
 
       const user = {
         email,
@@ -30,6 +57,7 @@ const SignupFormModal = () => {
 
       return dispatch(signup(user))
         .then(closeModal)
+        .then(history.push('/'))
         .catch(async (res) => {
           const data = await res.json()
           if (data && data.errors) {
@@ -47,67 +75,72 @@ const SignupFormModal = () => {
     <div className="signup-page">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
-      <div>
-          <input
-            type='email'
-            id='email'
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <label htmlFor='email'>Email</label>
-          {validationErrors.email && <p className='errors'>{`* ${validationErrors.email}`}</p>}
-        </div>
         <div>
-          <input
-            type='text'
-            id='username'
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-          />
-          <label htmlFor='username'>Username</label>
-          {validationErrors.username && <p className='errors'>{`* ${validationErrors.username}`}</p>}
-        </div>
-        <div>
+          {validationErrors.firstName && <p className='errors'>{`* ${validationErrors.firstName}`}</p>}
           <input
             type='text'
             id='firstName'
             value={firstName}
             onChange={e => setFirstName(e.target.value)}
+            placeholder='First Name'
           />
-          <label htmlFor='firstName'>First Name</label>
-          {validationErrors.firstName && <p className='errors'>{`* ${validationErrors.firstName}`}</p>}
         </div>
         <div>
+          {validationErrors.lastName && <p className='errors'>{`* ${validationErrors.lastName}`}</p>}
           <input
             type='text'
             id='lastName'
             value={lastName}
             onChange={e => setLastName(e.target.value)}
+            placeholder='Last Name'
           />
-          <label htmlFor='lastName'>Last Name</label>
-          {validationErrors.lastName && <p className='errors'>{`* ${validationErrors.lastName}`}</p>}
         </div>
         <div>
+          {validationErrors.email && <p className='errors'>{`* ${validationErrors.email}`}</p>}
+          <input
+            type='email'
+            id='email'
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder='Email'
+          />
+        </div>
+        <div>
+          {validationErrors.username && <p className='errors'>{`* ${validationErrors.username}`}</p>}
+          <input
+            type='text'
+            id='username'
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            placeholder='Username'
+          />
+        </div>
+        <div>
+          {validationErrors.password && <p className='errors'>{`* ${validationErrors.password}`}</p>}
           <input
             type='password'
             id='password'
             value={password}
             onChange={e => setPassword(e.target.value)}
+            placeholder='Password'
           />
-          <label htmlFor='password'>Password</label>
-          {validationErrors.password && <p className='errors'>{`* ${validationErrors.password}`}</p>}
         </div>
         <div>
+          {validationErrors.confirmPassword && <p className='errors'>{`* ${validationErrors.confirmPassword}`}</p>}
           <input
             type='password'
             id='confirmPassword'
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
+            placeholder='Confirm Password'
           />
-          <label htmlFor='confirmPassword'>Confirm Password</label>
-          {validationErrors.confirmPassword && <p className='errors'>{`* ${validationErrors.confirmPassword}`}</p>}
         </div>
-        <button type='submit'>Signup</button>
+        <button
+          type='submit'
+          disabled={disableButton}
+          className={disableButton ? 'disabled-button' : 'active-button'}
+        >
+          Signup</button>
       </form>
     </div>
   )

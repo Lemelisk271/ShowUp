@@ -1,9 +1,11 @@
 import { logout } from '../../store/session'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 
 const ProfileButton = ({ user }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const [showMenu, setShowMenu] = useState(false)
   const ulRef = useRef()
 
@@ -23,7 +25,7 @@ const ProfileButton = ({ user }) => {
 
   const logoutUser = (e) => {
     e.preventDefault()
-    dispatch(logout())
+    dispatch(logout()).then(history.push('/'))
   }
 
   const openMenu = () => {
@@ -32,15 +34,16 @@ const ProfileButton = ({ user }) => {
   }
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : ' hidden')
+  const arrowClassName = "fa-solid" + (showMenu ? " fa-angle-up" : " fa-angle-down")
 
   return (
     <>
       <button className="user-icon" onClick={openMenu}>
-        <i className="fa-solid fa-user"></i>
+        <i className="fa-solid fa-circle-user"></i>
+        <i style={{color: 'lightgrey', fontSize: '30px'}} className={arrowClassName}></i>
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li>{user.username}</li>
-        <li>{user.firstName} {user.lastName}</li>
+        <li>Hello, {user.firstName}</li>
         <li>{user.email}</li>
         <li>
           <button onClick={logoutUser}>Log Out</button>

@@ -10,7 +10,7 @@ if (process.env.NOD_ENV === 'production') {
   options.schema = process.env.SCHEMA
 }
 
-const names = ['Zach Smith', 'Emma Anema', 'Izolda Spellmeyer', 'Anwar Miyata', 'Davit Lange', 'Sawney Klimek', 'Manda Audley', 'Elisabeth Salinas', 'Haroun Prinz', 'Solveig Thomas', 'Urbain Ivankov', 'Hippolyte Richards', 'Madlenka Hirsch', 'Dagmar Chaudhuri', 'Zaur Leslie', 'Gord Albero', 'Tanner Kaube', 'Trophimos Krall', 'Kasih Dirchs', 'Gamila Harrison']
+const names = ['Zach Smith', 'Emma Anema', 'Izolda Spellmeyer', 'Anwar Miyata', 'Davit Lange', 'Sawney Klimek', 'Manda Audley', 'Elisabeth Salinas', 'Haroun Prinz', 'Solveig Thomas', 'Urbain Ivankov', 'Hippolyte Richards', 'Madlenka Hirsch', 'Dagmar Chaudhuri', 'Zaur Leslie', 'Gord Albero', 'Tanner Kaube', 'Trophimos Krall', 'Kasih Dirchs', 'Gamila Harrison', 'Demo User']
 
 const userSeeds = []
 
