@@ -34,12 +34,14 @@
   background-color: white;
   color: grey;
   box-shadow: 5px 5px 5px grey;
+  cursor: not-allowed;
 }
 
 .active-button {
   background-color: #f64061;
   color: white;
   box-shadow: 5px 5px 5px black;
+  cursor: pointer;
 }
 
 .login-page button {
