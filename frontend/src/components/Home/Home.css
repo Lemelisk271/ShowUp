@@ -48,7 +48,6 @@
   align-items: center;
   text-align: center;
   margin: 0 15px;
-  cursor: pointer;
 }
 
 .home-links img {
@@ -59,11 +58,20 @@
   margin: 0;
 }
 
-.home-links h4 {
+.home-links a {
+  text-decoration: none;
+  color: black;
+}
+
+.home-active h4 {
   color: #007a8a;
 }
 
-.home-links h4:hover {
+.home-disabled p, h4 {
+  color: grey;
+}
+
+.home-links .hover {
   text-decoration: underline;
 }
 
@@ -76,4 +84,5 @@
   font-size: 16px;
   box-shadow: 5px 5px 5px black;
   border-radius: 5px;
+  cursor: pointer;
 }
