@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import ProfileButton from './ProfileButton'
 import OpenModalButton from '../OpenModalButton'
@@ -14,7 +14,8 @@ const Navigation = ({ isLoaded }) => {
 
   if(sessionUser) {
     sessionLinks = (
-      <div>
+      <div className='nav-loggedIn'>
+        <Link to='groups/new'>Start a New Group</Link>
         <ProfileButton user={sessionUser} />
       </div>
     )

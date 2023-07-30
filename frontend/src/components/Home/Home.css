@@ -1,0 +1,88 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw;
+  margin: 20px auto;
+}
+
+.home-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.home-header div {
+  width: 50%;
+}
+
+.home-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 75%;
+}
+
+.home-how {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.home-how p, h3 {
+  margin: 0;
+}
+
+.home-links {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 30px;
+}
+
+.home-links div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0 15px;
+}
+
+.home-links img {
+  height: 150px;
+}
+
+.home-links p, h4 {
+  margin: 0;
+}
+
+.home-links a {
+  text-decoration: none;
+  color: black;
+}
+
+.home-active h4 {
+  color: #007a8a;
+}
+
+.home-disabled p, h4 {
+  color: grey;
+}
+
+.home-links .hover {
+  text-decoration: underline;
+}
+
+.home-page button {
+  background-color: #007a8a;
+  color: white;
+  height: 40px;
+  width: 150px;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 5px 5px 5px black;
+  border-radius: 5px;
+  cursor: pointer;
+}
