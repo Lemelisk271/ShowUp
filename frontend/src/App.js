@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { restoreUser } from './store/session'
 
 import Navigation from './components/Navigation'
+import Home from './components/Home'
 
 function App() {
   const dispatch = useDispatch()
@@ -26,7 +27,7 @@ function App() {
         <main>
           <Switch>
             <Route exact path='/'>
-              <h1>Home Page</h1>
+              <Home />
             </Route>
             <Route>
               <h1>Page Not Found</h1>

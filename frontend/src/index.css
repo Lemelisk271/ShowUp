@@ -8,8 +8,7 @@ nav {
 }
 
 main {
-  height: calc(100vh - 116px);
-  overflow-y: auto;
+  min-height: calc(100vh - 150px);
 }
 
 main h1 {
