@@ -5,6 +5,9 @@ import { restoreUser } from './store/session'
 
 import Navigation from './components/Navigation'
 import Home from './components/Home'
+import GroupsList from './components/GroupsList'
+import EventsList from './components/EventsList'
+import GroupsNew from './components/GroupsNew'
 
 function App() {
   const dispatch = useDispatch()
@@ -28,6 +31,15 @@ function App() {
           <Switch>
             <Route exact path='/'>
               <Home />
+            </Route>
+            <Route exact path='/groups'>
+              <GroupsList />
+            </Route>
+            <Route exact path='/groups/new'>
+              <GroupsNew />
+            </Route>
+            <Route exact path='/events'>
+              <EventsList />
             </Route>
             <Route>
               <h1>Page Not Found</h1>
