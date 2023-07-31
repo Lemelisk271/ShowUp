@@ -20,7 +20,16 @@ const images = [
   'https://images.dog.ceo/breeds/frise-bichon/2.jpg',
   'https://images.dog.ceo/breeds/otterhound/n02091635_1058.jpg',
   'https://images.dog.ceo/breeds/terrier-dandie/n02096437_50.jpg',
-  'https://images.dog.ceo/breeds/clumber/n02101556_5831.jpg'
+  'https://images.dog.ceo/breeds/clumber/n02101556_5831.jpg',
+  'https://images.dog.ceo/breeds/setter-english/n02100735_5258.jpg',
+  'https://images.dog.ceo/breeds/spaniel-japanese/n02085782_3979.jpg',
+  'https://images.dog.ceo/breeds/terrier-yorkshire/n02094433_2328.jpg',
+  'https://images.dog.ceo/breeds/samoyed/n02111889_2136.jpg',
+  'https://images.dog.ceo/breeds/terrier-yorkshire/n02094433_3010.jpg',
+  'https://images.dog.ceo/breeds/entlebucher/n02108000_3299.jpg',
+  'https://images.dog.ceo/breeds/springer-english/n02102040_3462.jpg',
+  'https://images.dog.ceo/breeds/terrier-norwich/n02094258_90.jpg',
+  'https://images.dog.ceo/breeds/redbone/n02090379_521.jpg'
 ]
 
 module.exports = {
