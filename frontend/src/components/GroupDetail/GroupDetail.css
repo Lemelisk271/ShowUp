@@ -78,6 +78,10 @@
   padding-top: 10px;
 }
 
+.groupDetail-past .eventListItem-body {
+  padding-top: 10px;
+}
+
 .groupDetail-upcoming a {
   text-decoration: none;
   color: black
