@@ -25,7 +25,7 @@ const groupImageSeeds = [
   },
   {
     group: 'The Eastside RPG & D&D Meetup Group',
-    url: 'https://www.belloflostsouls.net/wp-content/uploads/2021/03/wizard-level-up.png',
+    url: 'https://cdn.vox-cdn.com/thumbor/dwntSToz5bI1sAKGDBFZfC89wN4=/0x0:2048x1488/1520x0/filters:focal(0x0:2048x1488):format(webp):no_upscale()/cdn.vox-cdn.com/uploads/chorus_asset/file/22678876/Party_Art.jpg',
     preview: true
   },
   {

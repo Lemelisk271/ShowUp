@@ -1,6 +1,6 @@
 import { logout } from '../../store/session'
 import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 
 const ProfileButton = ({ user }) => {
@@ -45,6 +45,7 @@ const ProfileButton = ({ user }) => {
       <ul className={ulClassName} ref={ulRef}>
         <li>Hello, {user.firstName}</li>
         <li>{user.email}</li>
+        <li><Link to='/groups'>View Groups</Link></li>
         <li>
           <button onClick={logoutUser}>Log Out</button>
         </li>
