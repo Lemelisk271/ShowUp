@@ -76,7 +76,11 @@ const GroupDetail = () => {
                 <div className='groupDetail-groupText'>
                   <h1>{group.name}</h1>
                   <p>{`${group.city}, ${group.state}`}</p>
-                  <p>{`${groupEvents.length} events . ${group.private ? "Private" : "Public"}`}</p>
+                  <div className='groupDetail-events'>
+                    <p>{`${groupEvents.length} events`}</p>
+                    <i className="fa-solid fa-circle"></i>
+                    <p>{`${group.private ? "Private" : "Public"}`}</p>
+                  </div>
                   <p>{`Organized by ${group.Organizer.firstName} ${group.Organizer.lastName}`}</p>
                 </div>
                 <button>Join this group</button>

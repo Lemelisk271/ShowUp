@@ -30,7 +30,11 @@ const GroupListItem = ({ group }) => {
           <h2>{group.name}</h2>
           <p>{`${group.city}, ${group.state}`}</p>
           <p>{about}</p>
-          <p>{`${groupEvents.length} events . ${group.private ? "Private" : "Public"}`}</p>
+          <div className="groupListItem-events">
+          <p>{`${groupEvents.length} events`}</p>
+          <i className="fa-solid fa-circle"></i>
+          <p>{`${group.private ? "Private" : "Public"}`}</p>
+          </div>
         </div>
       </div>
     </Link>

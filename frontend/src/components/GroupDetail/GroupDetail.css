@@ -89,3 +89,16 @@
   text-decoration: none;
   color: black
 }
+
+.groupDetail-events {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.groupDetail-events i {
+  font-size: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: grey
+}
