@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const EventListItem = ({ event }) => {
   const [eventDetails, setEventDetails] = useState({})
@@ -20,19 +21,21 @@ const EventListItem = ({ event }) => {
   const time = startTime.toLocaleTimeString()
 
   return (
-    <div className="eventListItem">
-      <div className="eventListItem-header">
-        <img src={event.previewImage} alt={event.name} />
-        <div className="eventListItem-info">
-          <p>{`${year}-${month}-${day} ${time}`}</p>
-          <h2>{event.name}</h2>
-          <p>{`${event.Venue.city}, ${event.Venue.state}`}</p>
+    <Link to={`/events/${event.id}`}>
+      <div className="eventListItem">
+        <div className="eventListItem-header">
+          <img src={event.previewImage} alt={event.name} />
+          <div className="eventListItem-info">
+            <p>{`${year}-${month}-${day} ${time}`}</p>
+            <h2>{event.name}</h2>
+            <p>{`${event.Venue.city}, ${event.Venue.state}`}</p>
+          </div>
+        </div>
+        <div className='eventListItem-body'>
+          <p>{eventDetails.description}</p>
         </div>
       </div>
-      <div className='eventListItem-body'>
-        <p>{eventDetails.description}</p>
-      </div>
-    </div>
+    </Link>
   )
 }
 

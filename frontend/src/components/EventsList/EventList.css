@@ -1,0 +1,85 @@
+.eventList {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 75%;
+}
+
+.eventList-main a {
+  text-decoration: none;
+  color: black
+}
+
+.eventList-header {
+  border-bottom: 2px solid grey;
+  margin-bottom: 10px;
+}
+
+.eventList-header > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.eventList-links a {
+  padding-left: 10px;
+  font-size: 30px;
+  text-decoration: none;
+  color: black;
+}
+
+.eventList-links a:hover {
+  text-decoration: underline;
+}
+
+.eventList-links p {
+  padding-right: 10px;
+  font-size: 30px;
+  color: #007a8a;
+  text-decoration: underline;
+}
+
+.eventList-header > p {
+  margin-top: 0;
+  color: grey;
+}
+
+.eventListItem {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid grey;
+}
+
+.eventListItem img {
+  width: 25%;
+  object-fit: cover;
+  object-position: center top;
+  margin-right: 10px;
+}
+
+.eventListItem-header {
+  display: flex;
+  flex-direction: row;
+  height: 50%;
+}
+
+.eventListItem-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.eventListItem-info p {
+  margin: 0;
+}
+
+.eventListItem-body {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

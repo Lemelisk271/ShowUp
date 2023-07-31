@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { fetchEvents } from '../../store/events'
+import './EventList.css'
 
 import EventListItem from '../EventListItem'
 
 const EventsList = () => {
   const dispatch = useDispatch()
-  const events = useSelector(state => state.events.allEvents)
   const [eventList, setEventList] = useState([])
+  const [rawEventData, setRawEventData] = useState([])
   const [isLoaded, setIsLoaded] = useState(false)
+  const events = useSelector(state => state.events.allEvents)
 
   useEffect(() => {
     const getEvents = async () => {
@@ -21,11 +23,24 @@ const EventsList = () => {
 
   useEffect(() => {
     if (isLoaded) {
-      setEventList(Object.values(events))
+      setRawEventData(Object.values(events))
     }
   }, [isLoaded, events])
 
-  console.log(eventList)
+  useEffect(() => {
+    if (isLoaded && rawEventData.length > 0) {
+      const eventArray = []
+      rawEventData.forEach(event => {
+        const start = new Date(event.startDate)
+        const today = Date.now()
+        const startTime = start.getTime()
+        if (startTime >= today) {
+          eventArray.push(event)
+        }
+      })
+      setEventList(eventArray)
+    }
+  }, [rawEventData, isLoaded])
 
   return (
     <div className='eventList'>

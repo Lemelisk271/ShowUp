@@ -9,6 +9,7 @@ import GroupsList from './components/GroupsList'
 import EventsList from './components/EventsList'
 import GroupsNew from './components/GroupsNew'
 import GroupDetail from './components/GroupDetail'
+import EventDetail from './components/EventDetail'
 
 function App() {
   const dispatch = useDispatch()
@@ -44,6 +45,9 @@ function App() {
             </Route>
             <Route exact path='/events'>
               <EventsList />
+            </Route>
+            <Route path='/events/:eventId'>
+              <EventDetail />
             </Route>
             <Route>
               <h1>Page Not Found</h1>
