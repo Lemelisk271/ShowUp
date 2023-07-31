@@ -58,19 +58,24 @@
   justify-content: space-between;
 }
 
-.groupDetail-groupInfo button {
+.groupDetail-join button {
   width: 50%;
   height: 50px;
   background-color: red;
   color: white;
   font-weight: bold;
   box-shadow: 5px 5px 5px black;
+  cursor: pointer;
 }
 
 .groupDetail-upcoming {
   width: 60%;
   background-color: white;
   padding: 10px;
+}
+
+.groupDetail-upcoming .eventListItem-body {
+  padding-top: 10px;
 }
 
 .groupDetail-upcoming a {
@@ -88,4 +93,31 @@
 .groupDetail-past a {
   text-decoration: none;
   color: black
+}
+
+.groupDetail-events {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.groupDetail-events i {
+  font-size: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: grey
+}
+
+.groupDetails-organizer {
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  justify-content: space-between;
+}
+
+.groupDetails-organizer button {
+  background-color: grey;
+  color: white;
+  box-shadow: 5px 5px 5px black;
+  cursor: pointer;
 }

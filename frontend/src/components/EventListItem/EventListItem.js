@@ -26,7 +26,11 @@ const EventListItem = ({ event }) => {
         <div className="eventListItem-header">
           <img src={event.previewImage} alt={event.name} />
           <div className="eventListItem-info">
-            <p>{`${year}-${month}-${day} ${time}`}</p>
+            <div className='eventListItem-date'>
+              <p>{`${year}-${month}-${day}`}</p>
+              <i className="fa-solid fa-circle"></i>
+              <p>{`${time}`}</p>
+            </div>
             <h2>{event.name}</h2>
             <p>{`${event.Venue.city}, ${event.Venue.state}`}</p>
           </div>

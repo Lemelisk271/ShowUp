@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { fetchSingleGroup } from '../../store/groups'
 import EventListItem from '../EventListItem'
+import OpenModalButton from '../OpenModalButton'
+import ComingSoon from '../ComingSoon'
 import './GroupDetail.css'
 
 const GroupDetail = () => {
@@ -13,7 +15,10 @@ const GroupDetail = () => {
   const [groupEvents, setGroupEvents] = useState([])
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [pastEvents, setPastEvents] = useState([])
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isOrganizer, setIsOrganizer] = useState(false)
   const group = useSelector(state => state.groups.singleGroup)
+  const user = useSelector(state => state.session.user)
 
   useEffect(() => {
     const singleGroup = async () => {
@@ -31,6 +36,14 @@ const GroupDetail = () => {
     if (isLoaded) {
       const preview = group.GroupImages.find(img => img.preview === true)
       setPreviewImg(preview)
+      if (user) {
+        setIsLoggedIn(true)
+        if (user.id === group.Organizer.id) {
+          setIsOrganizer(true)
+        }
+      }
+      console.log(user)
+      console.log(group)
     }
   }, [group, isLoaded])
 
@@ -76,10 +89,34 @@ const GroupDetail = () => {
                 <div className='groupDetail-groupText'>
                   <h1>{group.name}</h1>
                   <p>{`${group.city}, ${group.state}`}</p>
-                  <p>{`${groupEvents.length} events . ${group.private ? "Private" : "Public"}`}</p>
+                  <div className='groupDetail-events'>
+                    <p>{`${groupEvents.length} events`}</p>
+                    <i className="fa-solid fa-circle"></i>
+                    <p>{`${group.private ? "Private" : "Public"}`}</p>
+                  </div>
                   <p>{`Organized by ${group.Organizer.firstName} ${group.Organizer.lastName}`}</p>
                 </div>
-                <button>Join this group</button>
+                <div className='groupDetail-buttons'>
+                  {isLoggedIn && !isOrganizer ? (
+                    <div className='groupDetail-join'>
+                      <OpenModalButton
+                        buttonText={'Join this group'}
+                        modalComponent={<ComingSoon />}
+                      />
+                    </div>
+                  ):(
+                    <></>
+                  )}
+                  {isOrganizer ? (
+                    <div className='groupDetails-organizer'>
+                      <button>Create Event</button>
+                      <button>Update</button>
+                      <button>Delete</button>
+                    </div>
+                  ):(
+                    <></>
+                  )}
+                </div>
               </div>
             </div>
           </div>
