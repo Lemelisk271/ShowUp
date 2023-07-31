@@ -47,12 +47,12 @@ module.exports = {
         venueId: venue.id,
         groupId: venue.groupId,
         name: `${venueName} Event - ${venue.Group.name}`,
-        description: `This will be a great event!`,
+        description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet nunc et odio ullamcorper cursus non id sem. Etiam tortor elit, lacinia ac dignissim ac, sodales quis lacus. Nam tincidunt dui at nisi eleifend, quis suscipit sem porttitor. Proin tellus ipsum, dapibus vel lorem sit amet, tempus malesuada ex. Mauris malesuada euismod euismod. Vestibulum ligula lectus, commodo a tempus at, ullamcorper vitae arcu. Vestibulum sapien sem, imperdiet id feugiat eget, tristique non metus. In eu rutrum tortor, quis suscipit lorem.`,
         type: types[Math.floor(Math.random() * 2)],
         capacity: randomInt(100, 2000),
         price: parseFloat(randomPrice()),
-        startDate: new Date(`2023-08-${numText}T12:00:00`),
-        endDate: new Date(`2023-08-${numText}T14:00:00`)
+        startDate: new Date(`2023-09-${numText}T12:00:00`),
+        endDate: new Date(`2023-09-${numText}T14:00:00`)
       }
 
       eventSeeds.push(obj)
