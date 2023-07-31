@@ -46,6 +46,7 @@ const ProfileButton = ({ user }) => {
         <li>Hello, {user.firstName}</li>
         <li>{user.email}</li>
         <li><Link to='/groups'>View Groups</Link></li>
+        <li><Link to='/events'>View Events</Link></li>
         <li>
           <button onClick={logoutUser}>Log Out</button>
         </li>

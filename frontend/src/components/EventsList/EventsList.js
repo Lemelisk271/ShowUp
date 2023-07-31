@@ -38,6 +38,9 @@ const EventsList = () => {
           eventArray.push(event)
         }
       })
+      eventArray.sort(function(a, b) {
+        return new Date(a.startDate) - new Date(b.startDate)
+      })
       setEventList(eventArray)
     }
   }, [rawEventData, isLoaded])
