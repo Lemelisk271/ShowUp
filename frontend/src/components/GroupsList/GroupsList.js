@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchGroups } from '../../store/groups'
 import GroupListItem from '../GroupListItem'
+import './GroupsList.css'
 
 const GroupsList = () => {
   const dispatch = useDispatch()
@@ -27,9 +28,9 @@ const GroupsList = () => {
   return (
     <div className='groupList'>
       <div className='groupList-header'>
-        <div>
+        <div className='groupList-links'>
           <Link to='/events'>Events</Link>
-          <p>Group</p>
+          <p>Groups</p>
         </div>
         <p>Groups in Showup</p>
       </div>

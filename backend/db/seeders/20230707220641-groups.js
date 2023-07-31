@@ -9,6 +9,12 @@ if (process.env.NOD_ENV === 'production') {
   options.schema = process.env.SCHEMA
 }
 
+const randomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min) + min)
+}
+
+const typeList = [true, false]
+
 const groupSeeds = [
   {
     organizer: 'eanema',
@@ -16,7 +22,8 @@ const groupSeeds = [
     about: `Join us in exploring the various impacts of artificial intelligence (AI) on technology, business, relationships, creativity, and society. You'll find us playing games, sharing stories, generating new ideas, and mitigating each other's existential dread. We welcome individuals with diverse backgrounds and industries, regardless of technical knowledge.`,
     type: 'In person',
     city: 'Seattle',
-    state: 'WA'
+    state: 'WA',
+    private: typeList[randomNumber(0,2)]
   },
   {
     organizer: 'zsmith',
@@ -24,7 +31,8 @@ const groupSeeds = [
     about: `Meet with local GMs who need players, players who need games, and discuss RPGs in general.`,
     type: 'In person',
     city: 'Bellevue',
-    state: 'WA'
+    state: 'WA',
+    private: typeList[randomNumber(0,2)]
   },
   {
     organizer: 'ispellmeyer',
@@ -40,7 +48,8 @@ const groupSeeds = [
     So don't waste another second hesitating. Say goodbye to F.O.M.O. and say hello to non-stop excitement with NO F.O.M.O. We're the party squad that's ready to rock your world and make every moment count. Let's do this, Seattle!`,
     type: 'In person',
     city: 'Omaha',
-    state: 'NE'
+    state: 'NE',
+    private: typeList[randomNumber(0,2)]
   },
   {
     organizer: 'amiyata',
@@ -48,7 +57,8 @@ const groupSeeds = [
     about: `We are a Meetup group and networking resource for web developers, formerly known as udevu. Join us on Discord, introduce yourself, and attend our next event.`,
     type: 'In person',
     city: 'Redmond',
-    state: 'WA'
+    state: 'WA',
+    private: typeList[randomNumber(0,2)]
   },
   {
     organizer: 'dlange',
@@ -56,7 +66,8 @@ const groupSeeds = [
     about: `Let’s get together and explore local food vendors in our neighborhood. We can also have events like potluck’s or cooking sessions. All skill levels are welcome. I started this group to meet other foodie enthusiasts. Looking forward to exploring local restaurants, dine-in, and meeting new people.`,
     type: 'In person',
     city: 'Issaquah',
-    state: 'WA'
+    state: 'WA',
+    private: typeList[randomNumber(0,2)]
   }
 ]
 

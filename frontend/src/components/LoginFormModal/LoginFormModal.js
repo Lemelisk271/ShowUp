@@ -54,6 +54,7 @@ const LoginFormModal = () => {
 
     return dispatch(login(user))
       .then(closeModal)
+      .then(history.push('/'))
       .catch(async (res) => {
         const data = await res.json()
         if (data && data.errors) setErrors(data.errors)
