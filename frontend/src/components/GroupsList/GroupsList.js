@@ -6,9 +6,9 @@ import GroupListItem from '../GroupListItem'
 
 const GroupsList = () => {
   const dispatch = useDispatch()
-  const groups = useSelector(state => state.groups.allGroups)
-  const groupList = Object.values(groups)
+  let groups = useSelector(state => state.groups.allGroups)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [groupList, setGroupList] = useState([])
 
   useEffect(() => {
     const getGroups = async () => {
@@ -17,6 +17,12 @@ const GroupsList = () => {
     }
     getGroups()
   }, [dispatch])
+
+  useEffect(() => {
+    if (isLoaded) {
+      setGroupList(Object.values(groups))
+    }
+  }, [isLoaded, groups])
 
   return (
     <div className='groupList'>
@@ -28,7 +34,13 @@ const GroupsList = () => {
         <p>Groups in Showup</p>
       </div>
       <div className='groupList-main'>
-        <GroupListItem />
+        {isLoaded ? (
+          groupList.map(group => (
+            <GroupListItem key={group.id} group={group} />
+          ))
+        ):(
+          <h1>loading</h1>
+        )}
       </div>
     </div>
   )
