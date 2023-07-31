@@ -1,0 +1,91 @@
+.groupDetail-main {
+  width: 100%;
+}
+
+.groupDetail-top {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.groupDetail-bottom {
+  width: 100%;
+  margin: 0 auto;
+  background-color: #eeeeee;
+}
+
+.groupDetail-body {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.groupDetail-back {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.groupDetail-back a {
+  color: #007a8a
+}
+
+.groupDetail-header {
+  display: flex;
+  flex-direction: row;
+  height: 300px;
+}
+
+.groupDetail-headerImg {
+  width: 50%;
+  margin-right: 10px;
+}
+
+.groupDetail-headerImg img {
+  object-fit: cover;
+  object-position: center top;
+  width: 100%;
+  height: 100%;
+}
+
+.groupDetail-groupText p {
+  color: grey
+}
+
+.groupDetail-groupInfo {
+  width: 50%;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.groupDetail-groupInfo button {
+  width: 50%;
+  height: 50px;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  box-shadow: 5px 5px 5px black;
+}
+
+.groupDetail-upcoming {
+  width: 60%;
+  background-color: white;
+  padding: 10px;
+}
+
+.groupDetail-upcoming a {
+  text-decoration: none;
+  color: black
+}
+
+.groupDetail-past {
+  width: 60%;
+  background-color: white;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.groupDetail-past a {
+  text-decoration: none;
+  color: black
+}
