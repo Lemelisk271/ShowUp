@@ -31,7 +31,14 @@ module.exports = {
         for (let k = 0; k < GroupMembership.length; k++) {
           let eventGroup = events[i].Group.name
           let userGroup = GroupMembership[k].name
-          if (eventGroup === userGroup) {
+          if ((users[j].id === GroupMembership[k].organizerId) && (eventGroup === userGroup)) {
+            const obj = {
+              eventId: events[i].id,
+              userId: users[j].id,
+              status: 'host'
+            }
+            seeds.push(obj)
+          } else if (eventGroup === userGroup) {
             const obj = {
               eventId: events[i].id,
               userId: users[j].id,
