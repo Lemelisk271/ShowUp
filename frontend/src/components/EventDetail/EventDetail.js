@@ -14,7 +14,9 @@ const EventDetail = () => {
   const [groupPreview, setGroupPreview] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [isHost, setIsHost] = useState(false)
   const event = useSelector(state => state.events.singleEvent)
+  const user = useSelector(state => state.session.user)
 
   useEffect(() => {
     const getSingleEvent = async () => {
@@ -51,6 +53,11 @@ const EventDetail = () => {
         const endYear = end.getFullYear()
         const endTime = end.toLocaleTimeString()
         setEndDate(`${endYear}-${endMonth}-${endDay} ${endTime}`)
+        if (user) {
+          if (user.id === host.id) {
+            setIsHost(true)
+          }
+        }
       }
     }
     loadPage()
@@ -101,11 +108,23 @@ const EventDetail = () => {
                     </div>
                     <div className='eventDetail-price'>
                       <i class="fa-solid fa-money-bill-wave"></i>
-                      <p>{`$${event.price === 0 ? ' FREE' : `${event.price}`}`}</p>
+                      <p>{`$${event.price == 0 ? ' FREE' : `${event.price}`}`}</p>
                     </div>
-                    <div className='eventDetail-location'>
-                      <i class="fa-solid fa-map-pin"></i>
-                      <p>{event.type}</p>
+                    <div className='eventDetail-groupBottom'>
+                      <div className='eventDetail-location'>
+                        <i class="fa-solid fa-map-pin"></i>
+                        <p>{event.type}</p>
+                      </div>
+                      <div className='eventDetail-buttons'>
+                        {isHost ? (
+                          <>
+                            <button>Update</button>
+                            <button>Delete</button>
+                          </>
+                        ):(
+                          ""
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
