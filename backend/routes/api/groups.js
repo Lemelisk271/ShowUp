@@ -544,7 +544,7 @@ router.post('/:groupId/events', requireAuth, validateEvent, async (req, res, nex
   const attendObj = {
     eventId: event.id,
     userId: req.user.id,
-    status: 'attending'
+    status: 'host'
   }
 
   await Attendance.create(attendObj)

@@ -42,9 +42,8 @@ const GroupDetail = () => {
           setIsOrganizer(true)
         }
       }
-      console.log(user)
-      console.log(group)
     }
+    // eslint-disable-next-line
   }, [group, isLoaded])
 
   useEffect(() => {
