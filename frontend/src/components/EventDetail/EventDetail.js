@@ -57,8 +57,6 @@ const EventDetail = () => {
     // eslint-disable-next-line
   }, [isLoaded, event])
 
-  console.log(event)
-
   return (
     <div className='eventDetail'>
       {isLoaded ? (
@@ -74,15 +72,19 @@ const EventDetail = () => {
           <div className='eventDetail-bottom'>
             <div className='eventDetail-body'>
               <div className='eventDetail-info'>
-                <img src={previewImg} alt={event.name} />
+                <div className='eventDetail-img'>
+                  <img src={previewImg} alt={event.name} />
+                </div>
                 <div className='eventDetail-side'>
-                  <div className='eventDetail-groupCard'>
-                    <img src={groupPreview} alt={group.name} />
-                    <div className='eventDetail-cardInfo'>
-                      <h3>{group.name}</h3>
-                      <p>{group.private ? "Private" : "Public"}</p>
+                  <Link to={`/groups/${event.groupId}`}>
+                    <div className='eventDetail-groupCard'>
+                      <img src={groupPreview} alt={group.name} />
+                      <div className='eventDetail-cardInfo'>
+                        <h3>{group.name}</h3>
+                        <p>{group.private ? "Private" : "Public"}</p>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                   <div className='eventDetail-eventCard'>
                     <div className='eventDetail-time'>
                       <i className="fa-regular fa-clock"></i>
@@ -99,7 +101,7 @@ const EventDetail = () => {
                     </div>
                     <div className='eventDetail-price'>
                       <i class="fa-solid fa-money-bill-wave"></i>
-                      <p>{`$ ${event.price}`}</p>
+                      <p>{`$${event.price === 0 ? ' FREE' : `${event.price}`}`}</p>
                     </div>
                     <div className='eventDetail-location'>
                       <i class="fa-solid fa-map-pin"></i>
