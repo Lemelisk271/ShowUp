@@ -108,7 +108,7 @@ const EventDetail = () => {
                     </div>
                     <div className='eventDetail-price'>
                       <i class="fa-solid fa-money-bill-wave"></i>
-                      <p>{`$${event.price == 0 ? ' FREE' : `${event.price}`}`}</p>
+                      <p>{`$${parseInt(event.price) === 0 ? ' FREE' : `${event.price}`}`}</p>
                     </div>
                     <div className='eventDetail-groupBottom'>
                       <div className='eventDetail-location'>
