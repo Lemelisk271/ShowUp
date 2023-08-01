@@ -78,15 +78,23 @@ const EventDetail = () => {
                 <div className='eventDetail-side'>
                   <div className='eventDetail-groupCard'>
                     <img src={groupPreview} alt={group.name} />
-                    <h3>{group.name}</h3>
-                    <p>{group.private ? "Private" : "Public"}</p>
+                    <div className='eventDetail-cardInfo'>
+                      <h3>{group.name}</h3>
+                      <p>{group.private ? "Private" : "Public"}</p>
+                    </div>
                   </div>
                   <div className='eventDetail-eventCard'>
                     <div className='eventDetail-time'>
                       <i className="fa-regular fa-clock"></i>
                       <div className='eventDetail-start'>
-                        <p>{`Start ${startDate}`}</p>
-                        <p>{`End ${endDate}`}</p>
+                        <div className='eventDetail-startDate'>
+                          <p>Start</p>
+                          <p>{startDate}</p>
+                        </div>
+                        <div className='eventDetail-endDate'>
+                          <p>End</p>
+                          <p>{endDate}</p>
+                        </div>
                       </div>
                     </div>
                     <div className='eventDetail-price'>

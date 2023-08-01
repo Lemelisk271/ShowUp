@@ -1,0 +1,119 @@
+.eventDetail {
+  width: 100%;
+}
+
+.eventDetail-head {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.eventDetail-head h2 {
+  margin: 10px 0;
+}
+
+.eventDetail-head p {
+  margin: 0;
+  color: grey
+}
+
+.eventDetail-back {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.eventDetail-back a {
+  color: #007a8a;
+}
+
+.eventDetail-bottom {
+  background-color: #eeeeee;
+  padding-top: 20px
+}
+
+.eventDetail-body {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.eventDetail-info {
+  display: flex;
+  flex-direction: row;
+  height: 300px;
+}
+
+.eventDetail-info > img {
+  width: 50%;
+  object-fit: cover;
+  object-position: center top;
+  margin-right: 10px;
+}
+
+.eventDetail-groupCard {
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  padding: 20px;
+  width: 100%;
+  border-radius: 20px;
+}
+
+.eventDetail-groupCard > img {
+  width: 30%;
+  object-fit: cover;
+  object-position: center top;
+  margin-right: 10px
+}
+
+.eventDetail-eventCard {
+  height: 50%;
+  margin-top: 10px;
+  background-color: white;
+  border-radius: 20px;
+  width: 100%;
+  padding: 20px;
+}
+
+.eventDetail-time {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.eventDetail-time p {
+  margin: 0;
+  color: #007a8a;
+}
+
+.eventDetail-time i {
+  margin-right: 10px;
+  color: grey;
+}
+
+.eventDetail-start {
+  width: 100%;
+}
+
+.eventDetail-startDate {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.eventDetail-startDate p:first-child {
+  color: grey;
+}
+
+.eventDetail-endDate {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.eventDetail-endDate p:first-child {
+  color: grey;
+}
