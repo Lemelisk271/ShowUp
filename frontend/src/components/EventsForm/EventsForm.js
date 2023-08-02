@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react'
 import { GroupContext } from '../../context/GroupContext'
+import './EventsForm.css'
 
 const EventsForm = () => {
   const { currentGroup } = useContext(GroupContext)
@@ -7,11 +8,47 @@ const EventsForm = () => {
   const [type, setType] = useState('')
   const [privateSelect, setPrivateSelect] = useState('')
   const [privateState, setPrivateState] = useState(true)
+  const [price, setPrice] = useState(0)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [url, setUrl] = useState('')
+  const [description, setDescription] = useState('')
   const [validationErrors, setValidationErrors] = useState({})
   const [isSubmitted, setIsSubmitted] = useState(false)
 
+  let today
+
+  useEffect(() => {
+    const currentDate = new Date
+    const currentYear = currentDate.getFullYear()
+    let currentMonth = currentDate.getMonth() + 1
+    if (currentMonth < 10) {
+      currentMonth = `0${currentMonth}`
+    }
+    let currentDay = currentDate.getDate()
+    if (currentDay < 10) {
+      currentDay = `0${currentDay}`
+    }
+    let currentHour = currentDate.getHours()
+    if (currentHour < 10) {
+      currentHour = `0${currentHour}`
+    }
+    let currentMin = currentDate.getMinutes()
+    if (currentMin < 10) {
+      currentMin = `0${currentMin}`
+    }
+    today = `${currentYear}-${currentMonth}-${currentDay}T${currentHour}:${currentMin}`
+    setStartDate(today)
+    setEndDate(today)
+  }, [])
+
   useEffect(() => {
     const errors = {}
+    const eventStart = new Date(startDate)
+    const eventStartTime = eventStart.getTime()
+    const eventEnd = new Date(endDate)
+    const eventEndTime = eventEnd.getTime()
+    const currentDate = Date.now()
 
     if (name.length === 0) {
       errors.name = "Please enter a name for the event."
@@ -25,9 +62,24 @@ const EventsForm = () => {
     if (privateSelect === 'Public') {
       setPrivateState(false)
     }
+    if (eventStartTime < currentDate) {
+      errors.startDate = "Start date must be in the future"
+    }
+    if (eventStartTime > eventEndTime) {
+      errors.endDate = "Please enter a date after the start date."
+    }
+    if (price < 0) {
+      errors.price = "Price is invalid"
+    }
+    if (url.length === 0) {
+      errors.url = "Please enter a url for your image."
+    }
+    if (description.length === 0) {
+      errors.description = "Please add a description of your event."
+    }
 
     setValidationErrors(errors)
-  }, [name, type, privateSelect])
+  }, [name, type, privateSelect, startDate, endDate, price, url])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -38,16 +90,28 @@ const EventsForm = () => {
     }
 
     const eventObj = {
+      venueId: 1,
       name,
       type,
-      privateState
+      capacity: 10,
+      price,
+      description,
+      startDate,
+      endDate,
+      privateState,
+      url
     }
 
     console.log(eventObj)
 
     setName('')
     setType('')
+    setPrice(0)
     setPrivateSelect('')
+    setStartDate(today)
+    setEndDate(today)
+    setUrl('')
+    setDescription('')
     setPrivateState(false)
     setIsSubmitted(false)
   }
@@ -97,6 +161,79 @@ const EventsForm = () => {
             <option>Public</option>
           </select>
           <p className='errors'>{isSubmitted && validationErrors.private && `* ${validationErrors.private}`}</p>
+        </div>
+      </div>
+      <div className='eventForm-price'>
+        <label htmlFor='price'>What is the price for your event?</label>
+        <div className='eventForm-errors'>
+          <div className='eventForm-priceInput'>
+            <p>$</p>
+            <input
+              id='price'
+              type='number'
+              onChange={e => setPrice(parseFloat(e.target.value))}
+              value={price}
+              min='0'
+              step={0.01}
+            />
+            <p className='errors'>{isSubmitted && validationErrors.price && `* ${validationErrors.price}`}</p>
+          </div>
+        </div>
+      </div>
+      <div className='eventForm-line'></div>
+      <div className='eventForm-startDate'>
+        <label htmlFor='startDate'>When does your event start?</label>
+        <div className='eventForm-errors'>
+          <input
+            id='startDate'
+            type='datetime-local'
+            value={startDate}
+            onChange={e => setStartDate(e.target.value)}
+            min={today}
+          />
+          <p className='errors'>{isSubmitted && validationErrors.startDate && `* ${validationErrors.startDate}`}</p>
+        </div>
+      </div>
+      <div className='eventForm-startDate'>
+        <label htmlFor='endDate'>When does your event end?</label>
+        <div className='eventForm-errors'>
+          <input
+            id='endDate'
+            type='datetime-local'
+            value={endDate}
+            onChange={e => setEndDate(e.target.value)}
+            min={today}
+          />
+          <p className='errors'>{isSubmitted && validationErrors.endDate && `* ${validationErrors.endDate}`}</p>
+        </div>
+      </div>
+      <div className='eventForm-line'></div>
+      <div className='eventForm-url'>
+        <label htmlFor='imageUrl'>Please add an image url for your event below:</label>
+        <div className='eventForm-errors'>
+          <input
+            type='url'
+            value={url}
+            id='imageUrl'
+            onChange={e => setUrl(e.target.value)}
+            placeholder='Image URL'
+          />
+          <p className='errors'>{isSubmitted && validationErrors.url && `* ${validationErrors.url}`}</p>
+        </div>
+      </div>
+      <div className='eventForm-line'></div>
+      <div className='eventForm-description'>
+        <label htmlFor='description'>Please describe your event.</label>
+        <div className='eventForm-errors'>
+          <textarea
+            id='description'
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            placeholder='Please include at least 30 characters'
+            rows="8"
+            cols="50"
+          />
+          <p className='errors'>{isSubmitted && validationErrors.description && `* ${validationErrors.description}`}</p>
         </div>
       </div>
       <button type='submit'>Create Event</button>
