@@ -4,6 +4,7 @@ const FETCH_GROUPS = 'groups/fetchGroups'
 const FETCH_SINGLE_GROUP = 'groups/fetchSingleGroup'
 const ADD_GROUP = 'groups/addGroup'
 const EDIT_GROUP = 'groups/editGroup'
+const DELETE_GROUP = 'groups/delete'
 
 const getGroups = (groups) => {
   return {
@@ -30,6 +31,13 @@ const editGroup = (group) => {
   return {
     type: EDIT_GROUP,
     group
+  }
+}
+
+const deleteGroup = (groupId) => {
+  return {
+    type: DELETE_GROUP,
+    groupId
   }
 }
 
@@ -123,6 +131,17 @@ export const updateGroup = (group) => async dispatch => {
   return groupRes
 }
 
+export const removeGroup = (groupId) => async dispatch => {
+  const res = await csrfFetch(`/api/groups/${groupId}`, {
+    method: 'DELETE'
+  })
+  const data = await res.json()
+  if (res.ok) {
+    await dispatch(deleteGroup(groupId))
+  }
+  return data
+}
+
 const initialState = {
   allGroups: {},
   singleGroup: {}
@@ -154,6 +173,11 @@ const groupsReducer = (state = initialState, action) => {
     case EDIT_GROUP: {
       newState = { ...state }
       newState.allGroups[action.group.id] = action.group
+      return newState
+    }
+    case DELETE_GROUP: {
+      newState = { ...state }
+      delete newState[action.groupId]
       return newState
     }
     default:
