@@ -94,7 +94,7 @@ const GroupForm = () => {
         <h2>We'll walk you through a few steps to build your local community</h2>
       </div>
       <div className='groupForm-line'></div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} class='groupForm-form'>
         <div className='groupForm-location'>
           <h2>First, set your group's location.</h2>
           <p>Showup groups meet locally, in person and online. We'll connect you with people in your area, and more can join you online.</p>
