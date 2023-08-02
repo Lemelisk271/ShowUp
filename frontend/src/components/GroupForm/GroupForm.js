@@ -55,7 +55,7 @@ const GroupForm = () => {
 
   if (!user) return <Redirect to='/' />
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     setIsSubmitted(true)
@@ -74,23 +74,28 @@ const GroupForm = () => {
       url
     }
 
-    return dispatch(addNewGroup(groupObj))
-      .catch(async (res) => {
-        const data = await res.json()
-        if (data && data.errors) setValidationErrors(data.errors)
-      })
+    const group = await dispatch(addNewGroup(groupObj)).catch(async (res) => {
+      const data = await res.json()
+      if (data && data.errors) {
+        setValidationErrors(data.errors)
+      }
+    })
+
+    if (group) {
+      history.push(`/groups/${group.id}`)
+    }
   }
 
   return (
     <div className='groupForm'>
       <div className='groupForm-header'>
-        <p>BECOME AN ORGANIZER</p>
+        <h1>Start a New Group</h1>
         <h2>We'll walk you through a few steps to build your local community</h2>
       </div>
       <form onSubmit={handleSubmit}>
         <div className='groupForm-location'>
           <h2>First, set your group's location.</h2>
-          <p>Showup groups meet locally, in person and online. We'll connect you with people in your area, and more and join you online.</p>
+          <p>Showup groups meet locally, in person and online. We'll connect you with people in your area, and more can join you online.</p>
           <input
             type='text'
             placeholder='City, STATE'
@@ -112,7 +117,7 @@ const GroupForm = () => {
           <p className='errors'>{isSubmitted && validationErrors.name && `* ${validationErrors.name}`}</p>
         </div>
         <div className='groupForm-about'>
-          <h2>Now describe what your group will be about</h2>
+          <h2>Describe the purpose of your group.</h2>
           <p>People will see this when we promote your group, but you'll be able to add to it later, too.</p>
           <ol>
             <li>What's the purpose of the group?</li>

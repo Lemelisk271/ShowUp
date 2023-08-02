@@ -32,8 +32,8 @@ export const fetchSingleEvent = (eventId) => async dispatch => {
 }
 
 const initialState = {
-  allEvents: null,
-  singleEvent: null
+  allEvents: {},
+  singleEvent: {}
 }
 
 const eventsReducer = (state = initialState, action) => {

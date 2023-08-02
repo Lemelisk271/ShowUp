@@ -64,20 +64,22 @@ export const addNewGroup = (group) => async dispatch => {
     body: JSON.stringify(groupObj)
   })
   const groupRes = await res.json()
-  await dispatch(addGroup(groupRes))
-  await csrfFetch(`/api/groups/${groupRes.id}/images`, {
-    method: 'POST',
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(imageObj)
-  })
-  return res
+  if (res.ok) {
+    await dispatch(addGroup(groupRes))
+    await csrfFetch(`/api/groups/${groupRes.id}/images`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(imageObj)
+    })
+  }
+  return groupRes
 }
 
 const initialState = {
-  allGroups: null,
-  singleGroup: null
+  allGroups: {},
+  singleGroup: {}
 }
 
 const groupsReducer = (state = initialState, action) => {
