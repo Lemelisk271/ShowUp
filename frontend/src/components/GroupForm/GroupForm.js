@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect, useHistory } from 'react-router-dom'
-import { addNewGroup } from '../../store/groups'
+import { addNewGroup, updateGroup } from '../../store/groups'
 import './GroupForm.css'
 
 const GroupForm = ({ formType, group }) => {
@@ -20,8 +20,6 @@ const GroupForm = ({ formType, group }) => {
   const [url, setUrl] = useState('')
   const [imageId, setImageId] = useState(1)
   const [validationErrors, setValidationErrors] = useState({})
-
-  console.log(formType)
 
   useEffect(() => {
     if (formType === 'update') {
@@ -82,6 +80,8 @@ const GroupForm = ({ formType, group }) => {
 
   if (!user) return <Redirect to='/' />
   if (formType === 'update' && user.id !== group.organizerId) <Redirect to='/' />
+  if (formType === 'update' && !group) <Redirect to='/' />
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -116,7 +116,18 @@ const GroupForm = ({ formType, group }) => {
     }
     if (formType === 'update') {
       groupObj.imageId = imageId
-      console.log(groupObj)
+      groupObj.groupId = group.id
+
+      const updatedGroup = await dispatch(updateGroup(groupObj)).catch(async (res) => {
+        const data = await res.json()
+        if (data && data.errors) {
+          setValidationErrors(data.errors)
+        }
+      })
+
+      if (updatedGroup) {
+        history.push(`/groups/${updatedGroup.id}`)
+      }
     }
   }
 
@@ -232,7 +243,7 @@ const GroupForm = ({ formType, group }) => {
           </div>
         </div>
         <div className='groupForm-line'></div>
-        <button type='submit'>Create group</button>
+        <button type='submit'>{formType === 'create' ? "Create Group" : "Update Group"}</button>
       </form>
     </div>
   )
