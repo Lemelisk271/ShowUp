@@ -4,7 +4,7 @@ import { Redirect, useHistory } from 'react-router-dom'
 import { addNewGroup } from '../../store/groups'
 import './GroupForm.css'
 
-const GroupForm = () => {
+const GroupForm = ({ formType, group }) => {
   const user = useSelector(state => state.session.user)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -18,7 +18,33 @@ const GroupForm = () => {
   const [privateSelect, setPrivateSelect] = useState('')
   const [privateState, setPrivateState] = useState(true)
   const [url, setUrl] = useState('')
+  const [imageId, setImageId] = useState(1)
   const [validationErrors, setValidationErrors] = useState({})
+
+  console.log(formType)
+
+  useEffect(() => {
+    if (formType === 'update') {
+      setCityState(`${group.city}, ${group.state}`)
+      setCity(group.city)
+      setState(group.state)
+      setName(group.name)
+      setAbout(group.about)
+      setType(group.type)
+      if (group.private === true) {
+        setPrivateSelect('Private')
+        setPrivateState(true)
+      }
+      if (group.private === false) {
+        setPrivateSelect('Public')
+        setPrivateState(false)
+      }
+
+      const previewImage = group.GroupImages.find(image => image.preview === true)
+      setImageId(previewImage.id)
+      setUrl(previewImage.url)
+    }
+  }, [])
 
   useEffect(() => {
     const errors = {}
@@ -55,6 +81,7 @@ const GroupForm = () => {
   }, [cityState])
 
   if (!user) return <Redirect to='/' />
+  if (formType === 'update' && user.id !== group.organizerId) <Redirect to='/' />
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -75,26 +102,41 @@ const GroupForm = () => {
       url
     }
 
-    const group = await dispatch(addNewGroup(groupObj)).catch(async (res) => {
-      const data = await res.json()
-      if (data && data.errors) {
-        setValidationErrors(data.errors)
-      }
-    })
+    if (formType === 'create') {
+      const group = await dispatch(addNewGroup(groupObj)).catch(async (res) => {
+        const data = await res.json()
+        if (data && data.errors) {
+          setValidationErrors(data.errors)
+        }
+      })
 
-    if (group) {
-      history.push(`/groups/${group.id}`)
+      if (group) {
+        history.push(`/groups/${group.id}`)
+      }
+    }
+    if (formType === 'update') {
+      groupObj.imageId = imageId
+      console.log(groupObj)
     }
   }
 
   return (
     <div className='groupForm'>
       <div className='groupForm-header'>
-        <h1>Start a New Group</h1>
-        <h2>We'll walk you through a few steps to build your local community</h2>
+        {formType === 'create' ? (
+          <>
+            <h1>Start a New Group</h1>
+            <h2>We'll walk you through a few steps to build your local community</h2>
+          </>
+        ):(
+          <>
+            <h1>Update Your Group's Information</h1>
+            <h2>We'll walk you through a few steps to update your group's information</h2>
+          </>
+        )}
       </div>
       <div className='groupForm-line'></div>
-      <form onSubmit={handleSubmit} class='groupForm-form'>
+      <form onSubmit={handleSubmit} className='groupForm-form'>
         <div className='groupForm-location'>
           <h2>First, set your group's location.</h2>
           <p>Showup groups meet locally, in person and online. We'll connect you with people in your area, and more can join you online.</p>
