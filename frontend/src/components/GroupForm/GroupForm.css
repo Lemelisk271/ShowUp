@@ -75,7 +75,7 @@
   margin-top: 5px;
 }
 
-form button {
+.groupForm-form button {
   background-color: red;
   color: white;
   width: 150px;

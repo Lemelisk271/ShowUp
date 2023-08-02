@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useParams, Link, useHistory } from 'react-router-dom'
+import { useEffect, useState, useContext } from 'react'
 import { fetchSingleGroup } from '../../store/groups'
+import { GroupContext } from '../../context/GroupContext'
 import EventListItem from '../EventListItem'
 import OpenModalButton from '../OpenModalButton'
 import ComingSoon from '../ComingSoon'
@@ -10,6 +11,8 @@ import './GroupDetail.css'
 const GroupDetail = () => {
   const dispatch = useDispatch()
   const { groupId } = useParams()
+  const history = useHistory()
+  const { setCurrentGroup } = useContext(GroupContext)
   const [isLoaded, setIsLoaded] = useState(false)
   const [previewImg, setPreviewImg] = useState({})
   const [groupEvents, setGroupEvents] = useState([])
@@ -71,6 +74,11 @@ const GroupDetail = () => {
     }
   }, [groupEvents, isLoaded])
 
+  const newEventButton = () => {
+    setCurrentGroup(group)
+    history.push('/events/new')
+  }
+
   return (
     <div className='groupDetail-main'>
       {isLoaded ? (
@@ -108,7 +116,7 @@ const GroupDetail = () => {
                   )}
                   {isOrganizer ? (
                     <div className='groupDetails-organizer'>
-                      <button>Create Event</button>
+                      <button onClick={newEventButton}>Create Event</button>
                       <button>Update</button>
                       <button>Delete</button>
                     </div>
