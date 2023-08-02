@@ -15,7 +15,7 @@ const Navigation = ({ isLoaded }) => {
   if(sessionUser) {
     sessionLinks = (
       <div className='nav-loggedIn'>
-        <Link to='groups/new'>Start a New Group</Link>
+        <Link to='/groups/new'>Start a New Group</Link>
         <ProfileButton user={sessionUser} />
       </div>
     )

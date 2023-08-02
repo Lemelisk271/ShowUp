@@ -1,6 +1,8 @@
+import GroupForm from '../GroupForm'
+
 const GroupsNew = () => {
   return (
-    <h1>GroupsNew</h1>
+    <GroupForm formType={"create"} />
   )
 }
 

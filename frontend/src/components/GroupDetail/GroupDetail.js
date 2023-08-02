@@ -129,26 +129,22 @@ const GroupDetail = () => {
                 <h2>What we're about</h2>
                 <p>{group.about}</p>
               </div>
-              <div className='groupDetail-upcoming'>
-                {upcomingEvents.length ? (
-                  <>
-                  <h2>{`Upcoming Events (${upcomingEvents.length})`}</h2>
-                  {upcomingEvents.map(event => (
-                    <EventListItem key={event.id} event={event} />
-                  ))}
-                  </>
-                ):("")}
-              </div>
-              <div className='groupDetail-past'>
-                {pastEvents.length ? (
-                  <>
+              {upcomingEvents.length ? (
+                <div className='groupDetail-upcoming'>
+                <h2>{`Upcoming Events (${upcomingEvents.length})`}</h2>
+                {upcomingEvents.map(event => (
+                  <EventListItem key={event.id} event={event} />
+                ))}
+                </div>
+              ):("")}
+              {pastEvents.length ? (
+                <div className='groupDetail-past'>
                   <h2>{`Past Events (${pastEvents.length})`}</h2>
                   {pastEvents.map(event => (
                     <EventListItem key={event.id} event={event} />
                   ))}
-                  </>
-                ):("")}
-              </div>
+                </div>
+              ):("")}
             </div>
           </div>
         </>
