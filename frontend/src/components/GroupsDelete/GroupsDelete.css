@@ -1,0 +1,35 @@
+.groupDelete {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.groupDelete > h1 {
+  margin: 10px 0;
+}
+
+.groupDelete-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.groupDelete-deleteButton, .groupDelete-noButton {
+  height: 40px;
+  width: 100%;
+  box-shadow: 5px 5px 5px black;
+  color: white;
+  font-size: 16px;
+}
+
+.groupDelete-deleteButton {
+  margin-bottom: 5px;
+  background-color: #f64061;
+}
+
+.groupDelete-noButton {
+  margin-top: 5px;
+  background-color: grey;
+}

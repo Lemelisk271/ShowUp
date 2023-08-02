@@ -3,6 +3,7 @@ import { removeGroup } from '../../store/groups'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { useState } from 'react'
+import './GroupsDelete.css'
 
 const GroupsDelete = ({ groupId }) => {
   const { closeModal } = useModal()
@@ -26,8 +27,8 @@ const GroupsDelete = ({ groupId }) => {
       <h3>Are you sure that you want to remove this group?</h3>
       <p className='errors'>{errors.message && `* ${errors.message}`}</p>
       <div className="groupDelete-buttons">
-        <button onClick={onDelete}>Yes (Delete Group)</button>
-        <button onClick={closeModal}>No (Keep Group)</button>
+        <button className="groupDelete-deleteButton" onClick={onDelete}>Yes (Delete Group)</button>
+        <button className='groupDelete-noButton' onClick={closeModal}>No (Keep Group)</button>
       </div>
     </div>
   )
