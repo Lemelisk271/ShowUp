@@ -2,7 +2,7 @@ import GroupForm from '../GroupForm'
 
 const GroupsNew = () => {
   return (
-    <GroupForm type={"create"} />
+    <GroupForm formType={"create"} />
   )
 }
 

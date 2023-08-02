@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { Redirect, useHistory } from 'react-router-dom'
+import { addNewGroup } from '../../store/groups'
 
 const GroupForm = () => {
   const user = useSelector(state => state.session.user)
+  const dispatch = useDispatch()
+  const history = useHistory()
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [cityState, setCityState] = useState('')
   const [city, setCity] = useState('')
@@ -65,23 +68,17 @@ const GroupForm = () => {
       name,
       about,
       type,
-      private: privateState,
+      privateState,
       city,
       state,
       url
     }
 
-    console.log(groupObj)
-
-    setName('')
-    setAbout('')
-    setType('')
-    setCityState('')
-    setCity('')
-    setState('')
-    setPrivateState(false)
-    setUrl('')
-    setIsSubmitted(false)
+    return dispatch(addNewGroup(groupObj))
+      .catch(async (res) => {
+        const data = await res.json()
+        if (data && data.errors) setValidationErrors(data.errors)
+      })
   }
 
   return (
