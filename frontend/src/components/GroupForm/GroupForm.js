@@ -79,9 +79,6 @@ const GroupForm = ({ formType, group }) => {
   }, [cityState])
 
   if (!user) return <Redirect to='/' />
-  if (formType === 'update' && user.id !== group.organizerId) <Redirect to='/' />
-  if (formType === 'update' && !group) <Redirect to='/' />
-
 
   const handleSubmit = async (e) => {
     e.preventDefault()

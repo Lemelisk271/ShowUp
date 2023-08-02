@@ -6,6 +6,7 @@ import { GroupContext } from '../../context/GroupContext'
 import EventListItem from '../EventListItem'
 import OpenModalButton from '../OpenModalButton'
 import ComingSoon from '../ComingSoon'
+import GroupsDelete from '../GroupsDelete'
 import './GroupDetail.css'
 
 const GroupDetail = () => {
@@ -123,7 +124,10 @@ const GroupDetail = () => {
                     <div className='groupDetails-organizer'>
                       <button onClick={newEventButton}>Create Event</button>
                       <button onClick={updateGroupButton}>Update</button>
-                      <button>Delete</button>
+                      <OpenModalButton
+                        buttonText={'Delete'}
+                        modalComponent={<GroupsDelete groupId={groupId}/>}
+                      />
                     </div>
                   ):(
                     <></>
