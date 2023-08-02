@@ -116,24 +116,35 @@
 .eventDetail-startDate {
   display: flex;
   flex-direction: row;
-  width: 54%;
+  width: 56%;
   justify-content: space-between;
+  align-items: center;
 }
 
 .eventDetail-startDate p {
   margin: 0
 }
 
+.eventDetail-startDate > i {
+  font-size: 5px;
+}
+
 .eventDetail-endDate {
   display: flex;
   flex-direction: row;
-  width: 54%;
+  width: 56%;
   justify-content: space-between;
+  align-items: center;
 }
 
 .eventDetail-endDate p {
   margin: 0
 }
+
+.eventDetail-endDate > i {
+  font-size: 5px;
+}
+
 
 .eventDetail-price, .eventDetail-location {
   display: flex;

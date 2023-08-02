@@ -1,0 +1,92 @@
+.groupForm {
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 100px
+}
+
+.groupForm p {
+  width: 50%;
+}
+
+.groupForm h2 {
+  margin: 0;
+}
+
+.groupForm input {
+  width: 35%;
+}
+
+.groupForm .errors {
+  margin-left: 10px;
+}
+
+.groupForm-header > h1 {
+  color: #007a8a
+}
+
+.groupForm-line {
+  width: 100%;
+  border-bottom: 2px solid grey;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+.groupForm-location,
+.groupForm-name,
+.groupForm-about,
+.groupForm-final {
+  width: 100%;
+}
+
+.groupForm-about > ol {
+  padding-left: 17px;
+}
+
+.groupForm-type {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.groupForm-errors > select {
+  width: fit-content;
+  margin-top: 5px;
+}
+
+.createForm-private {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.createForm-private > select {
+  width: fit-content;
+  margin-top: 5px;
+}
+
+.createForm-url {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.groupForm-errors > input {
+  margin-top: 5px;
+}
+
+form button {
+  background-color: red;
+  color: white;
+  width: 150px;
+  height: 30px;
+  font-size: 16px;
+  box-shadow: 5px 5px 5px black;
+}
+
+.groupForm-errors {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}

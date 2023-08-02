@@ -13,6 +13,8 @@ const EventDetail = () => {
   const [group, setGroup] = useState({})
   const [groupPreview, setGroupPreview] = useState('')
   const [startDate, setStartDate] = useState('')
+  const [startTimeState, setStartTimeState] = useState('')
+  const [endTimeState, setEndTimeState] = useState('')
   const [endDate, setEndDate] = useState('')
   const [isHost, setIsHost] = useState(false)
   const event = useSelector(state => state.events.singleEvent)
@@ -46,13 +48,15 @@ const EventDetail = () => {
         const startDay = start.getDate()
         const startYear = start.getFullYear()
         const startTime = start.toLocaleTimeString()
-        setStartDate(`${startYear}-${startMonth}-${startDay} ${startTime}`)
+        setStartDate(`${startYear}-${startMonth}-${startDay}`)
+        setStartTimeState(`${startTime}`)
         const end = new Date(event.startDate)
         const endMonth = end.getMonth() + 1
         const endDay = end.getDate()
         const endYear = end.getFullYear()
         const endTime = end.toLocaleTimeString()
-        setEndDate(`${endYear}-${endMonth}-${endDay} ${endTime}`)
+        setEndDate(`${endYear}-${endMonth}-${endDay}`)
+        setEndTimeState(`${endTime}`)
         if (user) {
           if (user.id === host.id) {
             setIsHost(true)
@@ -99,10 +103,14 @@ const EventDetail = () => {
                         <div className='eventDetail-startDate'>
                           <p>Start</p>
                           <p>{startDate}</p>
+                          <i className="fa-solid fa-circle"></i>
+                          <p>{startTimeState}</p>
                         </div>
                         <div className='eventDetail-endDate'>
                           <p>End</p>
                           <p>{endDate}</p>
+                          <i className="fa-solid fa-circle"></i>
+                          <p>{endTimeState}</p>
                         </div>
                       </div>
                     </div>
