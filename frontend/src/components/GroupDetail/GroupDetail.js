@@ -79,6 +79,11 @@ const GroupDetail = () => {
     history.push('/events/new')
   }
 
+  const updateGroupButton = () => {
+    setCurrentGroup(group)
+    history.push(`/groups/${group.id}/edit`)
+  }
+
   return (
     <div className='groupDetail-main'>
       {isLoaded ? (
@@ -117,7 +122,7 @@ const GroupDetail = () => {
                   {isOrganizer ? (
                     <div className='groupDetails-organizer'>
                       <button onClick={newEventButton}>Create Event</button>
-                      <button>Update</button>
+                      <button onClick={updateGroupButton}>Update</button>
                       <button>Delete</button>
                     </div>
                   ):(

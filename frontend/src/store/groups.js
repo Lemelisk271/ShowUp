@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const FETCH_GROUPS = 'groups/fetchGroups'
 const FETCH_SINGLE_GROUP = 'groups/fetchSingleGroup'
 const ADD_GROUP = 'groups/addGroup'
+const EDIT_GROUP = 'groups/editGroup'
 
 const getGroups = (groups) => {
   return {
@@ -21,6 +22,13 @@ const getSingleGroup = (group) => {
 const addGroup = (group) => {
   return {
     type: ADD_GROUP,
+    group
+  }
+}
+
+const editGroup = (group) => {
+  return {
+    type: EDIT_GROUP,
     group
   }
 }
@@ -77,6 +85,44 @@ export const addNewGroup = (group) => async dispatch => {
   return groupRes
 }
 
+export const updateGroup = (group) => async dispatch => {
+  const { name, about, type, privateState, city, state, url, imageId, groupId } = group
+
+  const groupObj = {
+    name,
+    about,
+    type,
+    private: privateState,
+    city,
+    state
+  }
+
+  const imageObj = {
+    url,
+    preview: true
+  }
+
+  const res = await csrfFetch(`/api/groups/${groupId}`, {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(groupObj)
+  })
+  const groupRes = await res.json()
+  if (res.ok) {
+    await dispatch(editGroup(groupRes))
+    await csrfFetch(`/api/group-images/${imageId}`, {
+      method: 'PUT',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(imageObj)
+    })
+  }
+  return groupRes
+}
+
 const initialState = {
   allGroups: {},
   singleGroup: {}
@@ -101,6 +147,11 @@ const groupsReducer = (state = initialState, action) => {
       return newState
     }
     case ADD_GROUP: {
+      newState = { ...state }
+      newState.allGroups[action.group.id] = action.group
+      return newState
+    }
+    case EDIT_GROUP: {
       newState = { ...state }
       newState.allGroups[action.group.id] = action.group
       return newState

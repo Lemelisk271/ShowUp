@@ -126,6 +126,7 @@ const EventsForm = () => {
       <div className='eventForm-name'>
         <label htmlFor='name'>What is the name of the event?</label>
         <div className='eventForm-errors'>
+          <p className='errors'>{isSubmitted && validationErrors.name && `* ${validationErrors.name}`}</p>
           <input
             type='text'
             id='name'
@@ -133,13 +134,13 @@ const EventsForm = () => {
             onChange={e => setName(e.target.value)}
             placeholder='Event Name'
           />
-          <p className='errors'>{isSubmitted && validationErrors.name && `* ${validationErrors.name}`}</p>
         </div>
       </div>
       <div className='eventForm-line'></div>
       <div className='eventFrom-type'>
         <label htmlFor='type'>Is this an in person or online event?</label>
         <div className='eventForm-errors'>
+          <p className='errors'>{isSubmitted && validationErrors.type && `* ${validationErrors.type}`}</p>
           <select
             id='type'
             onChange={e => setType(e.target.value)}
@@ -149,12 +150,12 @@ const EventsForm = () => {
             <option>In person</option>
             <option>Online</option>
           </select>
-          <p className='errors'>{isSubmitted && validationErrors.type && `* ${validationErrors.type}`}</p>
         </div>
       </div>
       <div className='eventForm-private'>
         <label htmlFor='privateSelect'>Is this event event private or public?</label>
         <div className='eventForm-errors'>
+          <p className='errors'>{isSubmitted && validationErrors.private && `* ${validationErrors.private}`}</p>
           <select
             id='privateSelect'
             onChange={e => setPrivateSelect(e.target.value)}
@@ -164,12 +165,12 @@ const EventsForm = () => {
             <option>Private</option>
             <option>Public</option>
           </select>
-          <p className='errors'>{isSubmitted && validationErrors.private && `* ${validationErrors.private}`}</p>
         </div>
       </div>
       <div className='eventForm-price'>
         <label htmlFor='price'>What is the price for your event?</label>
         <div className='eventForm-errors'>
+          <p className='errors'>{isSubmitted && validationErrors.price && `* ${validationErrors.price}`}</p>
           <div className='eventForm-priceInput'>
             <p>$</p>
             <input
@@ -180,7 +181,6 @@ const EventsForm = () => {
               min='0'
               step={0.01}
             />
-            <p className='errors'>{isSubmitted && validationErrors.price && `* ${validationErrors.price}`}</p>
           </div>
         </div>
       </div>
@@ -188,6 +188,7 @@ const EventsForm = () => {
       <div className='eventForm-startDate'>
         <label htmlFor='startDate'>When does your event start?</label>
         <div className='eventForm-errors'>
+          <p className='errors'>{isSubmitted && validationErrors.startDate && `* ${validationErrors.startDate}`}</p>
           <input
             id='startDate'
             type='datetime-local'
@@ -195,12 +196,12 @@ const EventsForm = () => {
             onChange={e => setStartDate(e.target.value)}
             min={today}
           />
-          <p className='errors'>{isSubmitted && validationErrors.startDate && `* ${validationErrors.startDate}`}</p>
         </div>
       </div>
       <div className='eventForm-endDate'>
         <label htmlFor='endDate'>When does your event end?</label>
         <div className='eventForm-errors'>
+          <p className='errors'>{isSubmitted && validationErrors.endDate && `* ${validationErrors.endDate}`}</p>
           <input
             id='endDate'
             type='datetime-local'
@@ -208,13 +209,13 @@ const EventsForm = () => {
             onChange={e => setEndDate(e.target.value)}
             min={today}
           />
-          <p className='errors'>{isSubmitted && validationErrors.endDate && `* ${validationErrors.endDate}`}</p>
         </div>
       </div>
       <div className='eventForm-line'></div>
       <div className='eventForm-url'>
         <label htmlFor='imageUrl'>Please add an image url for your event below:</label>
         <div className='eventForm-errors'>
+          <p className='errors'>{isSubmitted && validationErrors.url && `* ${validationErrors.url}`}</p>
           <input
             type='url'
             value={url}
@@ -222,13 +223,13 @@ const EventsForm = () => {
             onChange={e => setUrl(e.target.value)}
             placeholder='Image URL'
           />
-          <p className='errors'>{isSubmitted && validationErrors.url && `* ${validationErrors.url}`}</p>
         </div>
       </div>
       <div className='eventForm-line'></div>
       <div className='eventForm-description'>
         <label htmlFor='description'>Please describe your event.</label>
         <div className='eventForm-errors'>
+          <p className='errors'>{isSubmitted && validationErrors.description && `* ${validationErrors.description}`}</p>
           <textarea
             id='description'
             value={description}
@@ -237,7 +238,6 @@ const EventsForm = () => {
             rows="8"
             cols="60"
           />
-          <p className='errors'>{isSubmitted && validationErrors.description && `* ${validationErrors.description}`}</p>
         </div>
       </div>
       <button type='submit'>Create Event</button>
