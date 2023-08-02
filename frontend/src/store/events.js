@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const FETCH_EVENTS = 'events/fetchEvents'
 const FETCH_SINGLE_EVENT = 'events/fetchSingleEvent'
+const ADD_EVENT = 'events/addEvent'
 
 const getEvents = (events) => {
   return {
@@ -13,6 +14,13 @@ const getEvents = (events) => {
 const getSingleEvent = (event) => {
   return {
     type: FETCH_SINGLE_EVENT,
+    event
+  }
+}
+
+const addEvent = (event) => {
+  return {
+    type: ADD_EVENT,
     event
   }
 }
@@ -29,6 +37,46 @@ export const fetchSingleEvent = (eventId) => async dispatch => {
   const data = await res.json()
   dispatch(getSingleEvent(data))
   return data
+}
+
+export const addNewEvent = (event) => async dispatch => {
+  const { venueId, name, type, capacity, price, description, startDate, endDate, url, groupId } = event
+
+  const eventObj = {
+    venueId,
+    name,
+    type,
+    capacity,
+    price,
+    description,
+    startDate,
+    endDate
+  }
+
+  const imgObj = {
+    url,
+    preview: true
+  }
+
+  const res = await csrfFetch(`/api/groups/${groupId}/events`, {
+    method: 'POST',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(eventObj)
+  })
+  const eventRes = await res.json()
+  if (res.ok) {
+    await dispatch(addEvent(eventRes))
+    await csrfFetch(`/api/events/${eventRes.id}/images`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(imgObj)
+    })
+  }
+  return eventRes
 }
 
 const initialState = {
@@ -52,6 +100,11 @@ const eventsReducer = (state = initialState, action) => {
     case FETCH_SINGLE_EVENT: {
       newState = { ...state }
       newState.singleEvent = action.event
+      return newState
+    }
+    case ADD_EVENT: {
+      newState = { ...state }
+      newState.allEvents[action.event.id] = action.event
       return newState
     }
     default:

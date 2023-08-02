@@ -1,8 +1,13 @@
 import { useContext, useState, useEffect } from 'react'
 import { GroupContext } from '../../context/GroupContext'
+import { addNewEvent } from '../../store/events'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import './EventsForm.css'
 
 const EventsForm = () => {
+  const dispatch = useDispatch()
+  const history = useHistory()
   const { currentGroup } = useContext(GroupContext)
   const [name, setName] = useState('')
   const [type, setType] = useState('')
@@ -79,9 +84,9 @@ const EventsForm = () => {
     }
 
     setValidationErrors(errors)
-  }, [name, type, privateSelect, startDate, endDate, price, url])
+  }, [name, type, privateSelect, startDate, endDate, price, url, description])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitted(true)
 
@@ -91,6 +96,7 @@ const EventsForm = () => {
 
     const eventObj = {
       venueId: 1,
+      groupId: currentGroup.id,
       name,
       type,
       capacity: 10,
@@ -102,18 +108,16 @@ const EventsForm = () => {
       url
     }
 
-    console.log(eventObj)
+    const event = await dispatch(addNewEvent(eventObj)).catch(async (res) => {
+      const data = await res.json()
+      if (data && data.errors) {
+        setValidationErrors(data.errors)
+      }
+    })
 
-    setName('')
-    setType('')
-    setPrice(0)
-    setPrivateSelect('')
-    setStartDate(today)
-    setEndDate(today)
-    setUrl('')
-    setDescription('')
-    setPrivateState(false)
-    setIsSubmitted(false)
+    if (event) {
+      history.push(`/events/${event.id}`)
+    }
   }
 
   return (

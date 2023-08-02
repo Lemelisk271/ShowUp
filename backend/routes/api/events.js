@@ -177,7 +177,7 @@ router.get('/:eventId', async (req, res) => {
         through: {
           where: {
             status: {
-              [Op.in]: ['attending']
+              [Op.in]: ['attending', 'host']
             }
           }
         }
@@ -219,7 +219,7 @@ router.post('/:eventId/images', requireAuth, async (req, res, next) => {
         through: {
           where: {
             status: {
-              [Op.in]: ['attending', 'waitlist', 'pending']
+              [Op.in]: ['attending', 'waitlist', 'pending', 'host']
             }
           }
         }
