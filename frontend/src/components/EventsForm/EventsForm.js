@@ -198,7 +198,7 @@ const EventsForm = () => {
           <p className='errors'>{isSubmitted && validationErrors.startDate && `* ${validationErrors.startDate}`}</p>
         </div>
       </div>
-      <div className='eventForm-startDate'>
+      <div className='eventForm-endDate'>
         <label htmlFor='endDate'>When does your event end?</label>
         <div className='eventForm-errors'>
           <input
@@ -235,7 +235,7 @@ const EventsForm = () => {
             onChange={e => setDescription(e.target.value)}
             placeholder='Please include at least 30 characters'
             rows="8"
-            cols="50"
+            cols="60"
           />
           <p className='errors'>{isSubmitted && validationErrors.description && `* ${validationErrors.description}`}</p>
         </div>

@@ -1,6 +1,73 @@
+.eventForm {
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 100px;
+}
+
 .eventForm-line {
   width: 100%;
   border-bottom: 2px solid grey;
   padding-top: 20px;
   margin-bottom: 20px;
+}
+
+#name {
+  width: 75%;
+  margin-top: 5px;
+}
+
+#type, #privateSelect {
+  margin-top: 5px;
+  margin-bottom: 20px;
+  padding: 2px;
+}
+
+.eventForm-priceInput {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  align-items: center;
+  border: 1px solid black;
+  padding: 2px;
+  width: 15%;
+}
+
+.eventForm-priceInput > p {
+  margin: 0;
+  padding-top: 2px;
+}
+
+.eventForm-priceInput > input {
+  border: none;
+  width: 100%;
+  text-align: end;
+}
+
+#startDate {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+#endDate {
+  margin-top: 5px;
+}
+
+#imageUrl {
+  margin-top: 5px;
+  width: 75%;
+}
+
+#description {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.eventForm > button {
+  background-color: red;
+  color: white;
+  width: 150px;
+  height: 30px;
+  font-size: 16px;
+  box-shadow: 5px 5px 5px black;
 }
