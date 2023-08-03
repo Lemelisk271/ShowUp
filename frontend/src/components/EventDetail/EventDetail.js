@@ -2,6 +2,8 @@ import { Link, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { fetchSingleEvent } from '../../store/events'
+import EventsDelete from '../EventsDelete'
+import OpenModalButton from '../OpenModalButton'
 import './EventDetail.css'
 
 const EventDetail = () => {
@@ -127,7 +129,10 @@ const EventDetail = () => {
                         {isHost ? (
                           <>
                             <button>Update</button>
-                            <button>Delete</button>
+                            <OpenModalButton
+                              buttonText={'Delete'}
+                              modalComponent={<EventsDelete eventId={eventId}/>}
+                            />
                           </>
                         ):(
                           ""
