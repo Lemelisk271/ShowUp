@@ -318,7 +318,7 @@ const EventsForm = ({ formType, event }) => {
           />
         </div>
       </div>
-      <button type='submit'>Create Event</button>
+      <button type='submit'>{formType === 'create' ? "Create Event" : "Update Event"}</button>
     </form>
   )
 }
