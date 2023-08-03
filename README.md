@@ -1,4 +1,4 @@
-# Show Up
+# Showup
 
 ## Description
 This is a clone of the Meetup website the front end of the site was written in React.
