@@ -4,7 +4,7 @@ const FETCH_GROUPS = 'groups/fetchGroups'
 const FETCH_SINGLE_GROUP = 'groups/fetchSingleGroup'
 const ADD_GROUP = 'groups/addGroup'
 const EDIT_GROUP = 'groups/editGroup'
-const DELETE_GROUP = 'groups/delete'
+const DELETE_GROUP = 'groups/deleteGroup'
 
 const getGroups = (groups) => {
   return {

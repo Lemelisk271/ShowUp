@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const FETCH_EVENTS = 'events/fetchEvents'
 const FETCH_SINGLE_EVENT = 'events/fetchSingleEvent'
 const ADD_EVENT = 'events/addEvent'
+const DELETE_EVENT = 'events/deleteEvent'
 
 const getEvents = (events) => {
   return {
@@ -22,6 +23,13 @@ const addEvent = (event) => {
   return {
     type: ADD_EVENT,
     event
+  }
+}
+
+const deleteEvent = (eventId) => {
+  return {
+    type: DELETE_EVENT,
+    eventId
   }
 }
 
@@ -79,6 +87,17 @@ export const addNewEvent = (event) => async dispatch => {
   return eventRes
 }
 
+export const removeEvent = (eventId) => async dispatch => {
+  const res = await csrfFetch(`/api/events/${eventId}`, {
+    method: 'DELETE'
+  })
+  const data = await res.json()
+  if (res.ok) {
+    await dispatch(deleteEvent(eventId))
+  }
+  return data
+}
+
 const initialState = {
   allEvents: {},
   singleEvent: {}
@@ -105,6 +124,12 @@ const eventsReducer = (state = initialState, action) => {
     case ADD_EVENT: {
       newState = { ...state }
       newState.allEvents[action.event.id] = action.event
+      return newState
+    }
+    case DELETE_EVENT: {
+      newState = { ...state }
+      delete newState.allEvents[action.eventId]
+      newState.singleEvent = {}
       return newState
     }
     default:
