@@ -1,11 +1,11 @@
 import { useContext, useState, useEffect } from 'react'
 import { GroupContext } from '../../context/GroupContext'
-import { addNewEvent } from '../../store/events'
+import { addNewEvent, updateEvent } from '../../store/events'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import './EventsForm.css'
 
-const EventsForm = () => {
+const EventsForm = ({ formType, event }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   const { currentGroup } = useContext(GroupContext)
@@ -20,6 +20,7 @@ const EventsForm = () => {
   const [description, setDescription] = useState('')
   const [validationErrors, setValidationErrors] = useState({})
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [updatePreviewImage, setUpdatePreviewImage] = useState({})
 
   let today
 
@@ -43,8 +44,61 @@ const EventsForm = () => {
       currentMin = `0${currentMin}`
     }
     today = `${currentYear}-${currentMonth}-${currentDay}T${currentHour}:${currentMin}`
-    setStartDate(today)
-    setEndDate(today)
+    if (formType === 'create') {
+      setStartDate(today)
+      setEndDate(today)
+    }
+    if (formType === 'update') {
+      setName(event.name)
+      setType(event.type)
+      setPrivateSelect("Private")
+      setPrivateState(true)
+      setPrice(event.price)
+      const updateStartDate = new Date(event.startDate)
+      const updateStartYear = updateStartDate.getFullYear()
+      let updateStartMonth = updateStartDate.getMonth() + 1
+      if (updateStartMonth < 10) {
+        updateStartMonth = `0${updateStartMonth}`
+      }
+      let updateStartDay = updateStartDate.getDate()
+      if (updateStartDay < 10) {
+        updateStartDay = `0${updateStartDay}`
+      }
+      let updateStartHour = updateStartDate.getHours()
+      if (updateStartHour < 10) {
+        updateStartHour = `0${updateStartHour}`
+      }
+      let updateStartMin = updateStartDate.getMinutes()
+      if (updateStartMin < 10) {
+        updateStartMin = `0${updateStartMin}`
+      }
+      const finalStartDate = `${updateStartYear}-${updateStartMonth}-${updateStartDay}T${updateStartHour}:${updateStartMin}`
+      setStartDate(finalStartDate)
+      const updateEndDate = new Date(event.endDate)
+      const updateEndYear = updateEndDate.getFullYear()
+      let updateEndMonth = updateEndDate.getMonth() + 1
+      if (updateEndMonth < 10) {
+        updateEndMonth = `0${updateEndMonth}`
+      }
+      let updateEndDay = updateEndDate.getDate()
+      if (updateEndDay < 10) {
+        updateEndDay = `0${updateEndDay}`
+      }
+      let updateEndHour = updateEndDate.getHours()
+      if (updateEndHour < 10) {
+        updateEndHour = `0${updateEndHour}`
+      }
+      let updateEndMin = updateEndDate.getMinutes()
+      if (updateEndMin < 10) {
+        updateEndMin = `0${updateEndMin}`
+      }
+      const finalEndDate = `${updateEndYear}-${updateEndMonth}-${updateEndDay}T${updateEndHour}:${updateEndMin}`
+      setEndDate(finalEndDate)
+      const eventPreviewImage = event.EventImages.find(image => image.preview === true)
+      setUpdatePreviewImage(eventPreviewImage)
+      setUrl(eventPreviewImage.url)
+      setDescription(event.description)
+    }
   }, [])
 
   useEffect(() => {
@@ -108,21 +162,45 @@ const EventsForm = () => {
       url
     }
 
-    const event = await dispatch(addNewEvent(eventObj)).catch(async (res) => {
-      const data = await res.json()
-      if (data && data.errors) {
-        setValidationErrors(data.errors)
-      }
-    })
+    if (formType === 'create') {
+      const event = await dispatch(addNewEvent(eventObj)).catch(async (res) => {
+        const data = await res.json()
+        if (data && data.errors) {
+          setValidationErrors(data.errors)
+        }
+      })
 
-    if (event) {
-      history.push(`/events/${event.id}`)
+      if (event) {
+        history.push(`/events/${event.id}`)
+      }
+    } else {
+      eventObj.eventId = event.id
+      eventObj.groupId = event.groupId
+      eventObj.imageId = updatePreviewImage.id
+      eventObj.venueId = event.venueId
+
+      console.log(eventObj)
+
+      const updatedEvent = await dispatch(updateEvent(eventObj)).catch(async (res) => {
+        const data = await res.json()
+        if (data && data.errors) {
+          setValidationErrors(data.errors)
+        }
+      })
+
+      if (updatedEvent) {
+        history.push(`/events/${updatedEvent.id}`)
+      }
     }
   }
 
   return (
     <form className='eventForm' onSubmit={handleSubmit}>
-      <h2>{`Create an event for ${currentGroup.name}`}</h2>
+      {formType === 'create' ? (
+        <h2>{`Create an event for ${currentGroup.name}`}</h2>
+      ):(
+        <h2>{`Update ${event.name}`}</h2>
+      )}
       <div className='eventForm-name'>
         <label htmlFor='name'>What is the name of the event?</label>
         <div className='eventForm-errors'>

@@ -10,8 +10,9 @@ import EventsList from './components/EventsList'
 import GroupsNew from './components/GroupsNew'
 import GroupDetail from './components/GroupDetail'
 import EventDetail from './components/EventDetail'
-import EventsForm from './components/EventsForm'
+import EventsNew from './components/EventsNew'
 import GroupsUpdate from './components/GroupsUpdate'
+import EventsUpdate from './components/EventsUpdate'
 
 function App() {
   const dispatch = useDispatch()
@@ -52,10 +53,13 @@ function App() {
               <EventsList />
             </Route>
             <Route exact path='/events/new'>
-              <EventsForm />
+              <EventsNew />
             </Route>
-            <Route path='/events/:eventId'>
+            <Route exact path='/events/:eventId'>
               <EventDetail />
+            </Route>
+            <Route path='/events/:eventId/edit'>
+              <EventsUpdate />
             </Route>
             <Route>
               <h1>Page Not Found</h1>
