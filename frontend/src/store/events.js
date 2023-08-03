@@ -42,9 +42,13 @@ const editEvent = (event) => {
 }
 
 export const fetchEvents = () => async dispatch => {
-  const res = await csrfFetch('/api/events')
+  const res = await csrfFetch('/api/events?size=1000')
   const data = await res.json()
-  dispatch(getEvents(data.Events))
+  const eventObj = {}
+  data.Events.forEach(event => {
+    eventObj[event.id] = event
+  })
+  dispatch(getEvents(eventObj))
   return data
 }
 
@@ -156,13 +160,8 @@ const eventsReducer = (state = initialState, action) => {
   let newState
   switch (action.type) {
     case FETCH_EVENTS: {
-      const eventList = [ ...action.events ]
-      const eventObj = {}
-      eventList.forEach(event => {
-        eventObj[event.id] = event
-      })
       newState = { ...state }
-      newState.allEvents = { ...eventObj }
+      newState.allEvents = { ...action.events }
       return newState
     }
     case FETCH_SINGLE_EVENT: {
