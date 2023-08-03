@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react'
 import { GroupContext } from '../../context/GroupContext'
-import { addNewEvent } from '../../store/events'
+import { addNewEvent, updateEvent } from '../../store/events'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import './EventsForm.css'
@@ -178,7 +178,19 @@ const EventsForm = ({ formType, event }) => {
       eventObj.groupId = event.groupId
       eventObj.imageId = updatePreviewImage.id
       eventObj.venueId = event.venueId
+
       console.log(eventObj)
+
+      const updatedEvent = await dispatch(updateEvent(eventObj)).catch(async (res) => {
+        const data = await res.json()
+        if (data && data.errors) {
+          setValidationErrors(data.errors)
+        }
+      })
+
+      if (updatedEvent) {
+        history.push(`/events/${updatedEvent.id}`)
+      }
     }
   }
 
