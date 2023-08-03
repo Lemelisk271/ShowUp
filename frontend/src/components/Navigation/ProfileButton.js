@@ -37,7 +37,7 @@ const ProfileButton = ({ user }) => {
   const arrowClassName = "fa-solid" + (showMenu ? " fa-angle-up" : " fa-angle-down")
 
   return (
-    <>
+    <div className='icon-div'>
       <button className="user-icon" onClick={openMenu}>
         <i className="fa-solid fa-circle-user"></i>
         <i style={{color: 'lightgrey', fontSize: '30px'}} className={arrowClassName}></i>
@@ -51,7 +51,7 @@ const ProfileButton = ({ user }) => {
           <button onClick={logoutUser}>Log Out</button>
         </li>
       </ul>
-    </>
+    </div>
   )
 }
 

@@ -90,9 +90,9 @@ router.get('/', validateQuery, async (req, res) => {
     page = 10
   }
 
-  if (size > 20) {
-    size = 20
-  }
+  // if (size > 20) {
+  //   size = 20
+  // }
 
   query.limit = size
   query.offset = size * (page - 1)

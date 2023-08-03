@@ -42,6 +42,7 @@ const GroupForm = ({ formType, group }) => {
       setImageId(previewImage.id)
       setUrl(previewImage.url)
     }
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
