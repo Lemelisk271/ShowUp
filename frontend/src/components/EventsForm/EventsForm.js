@@ -25,7 +25,7 @@ const EventsForm = ({ formType, event }) => {
   let today
 
   useEffect(() => {
-    const currentDate = new Date
+    const currentDate = new Date()
     const currentYear = currentDate.getFullYear()
     let currentMonth = currentDate.getMonth() + 1
     if (currentMonth < 10) {
@@ -43,6 +43,7 @@ const EventsForm = ({ formType, event }) => {
     if (currentMin < 10) {
       currentMin = `0${currentMin}`
     }
+    // eslint-disable-next-line
     today = `${currentYear}-${currentMonth}-${currentDay}T${currentHour}:${currentMin}`
     if (formType === 'create') {
       setStartDate(today)
