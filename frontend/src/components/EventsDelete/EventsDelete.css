@@ -1,0 +1,35 @@
+.eventDelete {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.eventDelete > h1 {
+  margin: 10px 0;
+}
+
+.eventDelete-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.eventDelete-deleteButton, .eventDelete-noButton {
+  height: 40px;
+  width: 100%;
+  box-shadow: 5px 5px 5px black;
+  color: white;
+  font-size: 16px;
+}
+
+.eventDelete-deleteButton {
+  margin-bottom: 5px;
+  background-color: #f64061;
+}
+
+.eventDelete-noButton {
+  margin-top: 5px;
+  background-color: grey;
+}
