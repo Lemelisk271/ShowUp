@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { useState } from 'react'
 import './EventsDelete.css'
 
-const EventsDelete = ({ eventId }) => {
+const EventsDelete = ({ eventId, groupId }) => {
   const { closeModal } = useModal()
   const dispatch = useDispatch()
   const history = useHistory()
@@ -14,7 +14,7 @@ const EventsDelete = ({ eventId }) => {
   const onDelete = () => {
     return dispatch(removeEvent(eventId))
       .then(closeModal)
-      .then(history.push('/'))
+      .then(history.push(`/groups/${groupId}`))
       .catch(async (res) => {
         const data = res.json()
         if (data && data.errors) setErrors(data.errors)
