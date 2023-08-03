@@ -53,7 +53,7 @@ const EventDetail = () => {
         const startTime = start.toLocaleTimeString()
         setStartDate(`${startYear}-${startMonth}-${startDay}`)
         setStartTimeState(`${startTime}`)
-        const end = new Date(event.startDate)
+        const end = new Date(event.endDate)
         const endMonth = end.getMonth() + 1
         const endDay = end.getDate()
         const endYear = end.getFullYear()
