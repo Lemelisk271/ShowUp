@@ -26,6 +26,10 @@ nav img {
   background: none;
 }
 
+.icon-div {
+  position: relative;
+}
+
 .user-icon i {
   padding: 0 5px;
 }
@@ -33,7 +37,6 @@ nav img {
 .profile-dropdown {
   position: absolute;
   right: 20px;
-  top: 75px;
   background-color: white;
   z-index: 1;
   list-style-type: none;
