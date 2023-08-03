@@ -151,7 +151,7 @@ const GroupForm = ({ formType, group }) => {
           <div className='groupForm-errors'>
             <input
               type='text'
-              placeholder='City, STATE'
+              placeholder='City, ST'
               value={cityState}
               onChange={e => setCityState(e.target.value)}
             />

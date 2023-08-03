@@ -34,7 +34,7 @@ const validateGroup = [
       max: 2
     })
     .isUppercase()
-    .withMessage("State is required"),
+    .withMessage("A two letter state is required"),
   handleValidationErrors
 ]
 
