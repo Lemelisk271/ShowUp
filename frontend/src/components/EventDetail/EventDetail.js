@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { fetchSingleEvent } from '../../store/events'
@@ -9,6 +9,7 @@ import './EventDetail.css'
 const EventDetail = () => {
   const { eventId } = useParams()
   const dispatch = useDispatch()
+  const history = useHistory()
   const [isLoaded, setIsLoaded] = useState(false)
   const [host, setHost] = useState('')
   const [previewImg, setPreviewImg] = useState('')
@@ -117,18 +118,18 @@ const EventDetail = () => {
                       </div>
                     </div>
                     <div className='eventDetail-price'>
-                      <i class="fa-solid fa-money-bill-wave"></i>
+                      <i className="fa-solid fa-money-bill-wave"></i>
                       <p>{`$${parseInt(event.price) === 0 ? ' FREE' : `${event.price}`}`}</p>
                     </div>
                     <div className='eventDetail-groupBottom'>
                       <div className='eventDetail-location'>
-                        <i class="fa-solid fa-map-pin"></i>
+                        <i className="fa-solid fa-map-pin"></i>
                         <p>{event.type}</p>
                       </div>
                       <div className='eventDetail-buttons'>
                         {isHost ? (
                           <>
-                            <button>Update</button>
+                            <button onClick={() => history.push(`/events/${event.id}/edit`)}>Update</button>
                             <OpenModalButton
                               buttonText={'Delete'}
                               modalComponent={<EventsDelete eventId={eventId} groupId={event.groupId}/>}
