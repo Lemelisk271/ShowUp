@@ -8,11 +8,15 @@ const GroupsUpdate = () => {
   const { currentGroup } = useContext(GroupContext)
   const user = useSelector(state => state.session.user)
 
-  if (user.id !== currentGroup.organizerId) return <Redirect to='/' />
-
-  return (
-    <GroupForm formType={'update'} group={currentGroup} />
-  )
+  if (!user) {
+    return <Redirect to='/' />
+  } else if (user.id !== currentGroup.organizerId) {
+    return <Redirect to='/' />
+  } else {
+    return (
+      <GroupForm formType={'update'} group={currentGroup} />
+    )
+  }
 }
 
 export default GroupsUpdate
