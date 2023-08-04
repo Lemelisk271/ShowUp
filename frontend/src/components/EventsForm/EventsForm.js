@@ -184,8 +184,6 @@ const EventsForm = ({ formType, event }) => {
       eventObj.imageId = updatePreviewImage.id
       eventObj.venueId = event.venueId
 
-      console.log(eventObj)
-
       const updatedEvent = await dispatch(updateEvent(eventObj)).catch(async (res) => {
         const data = await res.json()
         if (data && data.errors) {
