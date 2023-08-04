@@ -50,55 +50,59 @@ const EventsForm = ({ formType, event }) => {
       setEndDate(today)
     }
     if (formType === 'update') {
-      setName(event.name)
-      setType(event.type)
-      setPrivateSelect("Private")
-      setPrivateState(true)
-      setPrice(event.price)
-      const updateStartDate = new Date(event.startDate)
-      const updateStartYear = updateStartDate.getFullYear()
-      let updateStartMonth = updateStartDate.getMonth() + 1
-      if (updateStartMonth < 10) {
-        updateStartMonth = `0${updateStartMonth}`
+      if (!event.EventImages) {
+        history.push('/')
+      } else {
+        setName(event.name)
+        setType(event.type)
+        setPrivateSelect("Private")
+        setPrivateState(true)
+        setPrice(event.price)
+        const updateStartDate = new Date(event.startDate)
+        const updateStartYear = updateStartDate.getFullYear()
+        let updateStartMonth = updateStartDate.getMonth() + 1
+        if (updateStartMonth < 10) {
+          updateStartMonth = `0${updateStartMonth}`
+        }
+        let updateStartDay = updateStartDate.getDate()
+        if (updateStartDay < 10) {
+          updateStartDay = `0${updateStartDay}`
+        }
+        let updateStartHour = updateStartDate.getHours()
+        if (updateStartHour < 10) {
+          updateStartHour = `0${updateStartHour}`
+        }
+        let updateStartMin = updateStartDate.getMinutes()
+        if (updateStartMin < 10) {
+          updateStartMin = `0${updateStartMin}`
+        }
+        const finalStartDate = `${updateStartYear}-${updateStartMonth}-${updateStartDay}T${updateStartHour}:${updateStartMin}`
+        setStartDate(finalStartDate)
+        const updateEndDate = new Date(event.endDate)
+        const updateEndYear = updateEndDate.getFullYear()
+        let updateEndMonth = updateEndDate.getMonth() + 1
+        if (updateEndMonth < 10) {
+          updateEndMonth = `0${updateEndMonth}`
+        }
+        let updateEndDay = updateEndDate.getDate()
+        if (updateEndDay < 10) {
+          updateEndDay = `0${updateEndDay}`
+        }
+        let updateEndHour = updateEndDate.getHours()
+        if (updateEndHour < 10) {
+          updateEndHour = `0${updateEndHour}`
+        }
+        let updateEndMin = updateEndDate.getMinutes()
+        if (updateEndMin < 10) {
+          updateEndMin = `0${updateEndMin}`
+        }
+        const finalEndDate = `${updateEndYear}-${updateEndMonth}-${updateEndDay}T${updateEndHour}:${updateEndMin}`
+        setEndDate(finalEndDate)
+        const eventPreviewImage = event.EventImages.find(image => image.preview === true)
+        setUpdatePreviewImage(eventPreviewImage)
+        setUrl(eventPreviewImage.url)
+        setDescription(event.description)
       }
-      let updateStartDay = updateStartDate.getDate()
-      if (updateStartDay < 10) {
-        updateStartDay = `0${updateStartDay}`
-      }
-      let updateStartHour = updateStartDate.getHours()
-      if (updateStartHour < 10) {
-        updateStartHour = `0${updateStartHour}`
-      }
-      let updateStartMin = updateStartDate.getMinutes()
-      if (updateStartMin < 10) {
-        updateStartMin = `0${updateStartMin}`
-      }
-      const finalStartDate = `${updateStartYear}-${updateStartMonth}-${updateStartDay}T${updateStartHour}:${updateStartMin}`
-      setStartDate(finalStartDate)
-      const updateEndDate = new Date(event.endDate)
-      const updateEndYear = updateEndDate.getFullYear()
-      let updateEndMonth = updateEndDate.getMonth() + 1
-      if (updateEndMonth < 10) {
-        updateEndMonth = `0${updateEndMonth}`
-      }
-      let updateEndDay = updateEndDate.getDate()
-      if (updateEndDay < 10) {
-        updateEndDay = `0${updateEndDay}`
-      }
-      let updateEndHour = updateEndDate.getHours()
-      if (updateEndHour < 10) {
-        updateEndHour = `0${updateEndHour}`
-      }
-      let updateEndMin = updateEndDate.getMinutes()
-      if (updateEndMin < 10) {
-        updateEndMin = `0${updateEndMin}`
-      }
-      const finalEndDate = `${updateEndYear}-${updateEndMonth}-${updateEndDay}T${updateEndHour}:${updateEndMin}`
-      setEndDate(finalEndDate)
-      const eventPreviewImage = event.EventImages.find(image => image.preview === true)
-      setUpdatePreviewImage(eventPreviewImage)
-      setUrl(eventPreviewImage.url)
-      setDescription(event.description)
     }
   }, [])
 
