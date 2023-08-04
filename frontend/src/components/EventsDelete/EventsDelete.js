@@ -25,6 +25,7 @@ const EventsDelete = ({ eventId, groupId }) => {
     <div className="eventDelete">
       <h1>Confirm Delete</h1>
       <h3>Are you sure you want to remove this event?</h3>
+      <p className='errors'>{errors.message && `* ${errors.message}`}</p>
       <div className="eventDelete-buttons">
         <button className="eventDelete-deleteButton" onClick={onDelete}>Yes (Delete Event)</button>
         <button className="eventDelete-noButton" onClick={closeModal}>No (Keep Event)</button>
