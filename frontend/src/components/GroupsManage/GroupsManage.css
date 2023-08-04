@@ -1,0 +1,21 @@
+.groupsManage {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 75%;
+}
+
+.groupsManage-header {
+  border-bottom: 2px solid grey;
+  margin-bottom: 10px;
+}
+
+.groupsManage-header > p {
+  margin-top: 0;
+  color: grey
+}
+
+.groupsManage-main > a {
+  text-decoration: none;
+  color: black;
+}

@@ -5,10 +5,18 @@ const FETCH_SINGLE_GROUP = 'groups/fetchSingleGroup'
 const ADD_GROUP = 'groups/addGroup'
 const EDIT_GROUP = 'groups/editGroup'
 const DELETE_GROUP = 'groups/deleteGroup'
+const GET_USER_GROUPS = 'groups/getUserGroups'
 
 const getGroups = (groups) => {
   return {
     type: FETCH_GROUPS,
+    groups
+  }
+}
+
+const getUserGroups = (groups) => {
+  return {
+    type: GET_USER_GROUPS,
     groups
   }
 }
@@ -45,6 +53,15 @@ export const fetchGroups = () => async dispatch => {
   const res = await csrfFetch('/api/groups')
   const data = await res.json()
   dispatch(getGroups(data.Groups))
+  return res
+}
+
+export const fetchUserGroup = () => async dispatch => {
+  const res = await csrfFetch('/api/groups/current')
+  const data = await res.json()
+  if (res.ok) {
+    dispatch(getUserGroups(data.Groups))
+  }
   return res
 }
 
@@ -144,7 +161,8 @@ export const removeGroup = (groupId) => async dispatch => {
 
 const initialState = {
   allGroups: {},
-  singleGroup: {}
+  singleGroup: {},
+  userGroups: {}
 }
 
 const groupsReducer = (state = initialState, action) => {
@@ -179,6 +197,16 @@ const groupsReducer = (state = initialState, action) => {
       newState = { ...state }
       delete newState.allGroups[action.groupId]
       newState.singleGroup = {}
+      return newState
+    }
+    case GET_USER_GROUPS: {
+      const userGroupList = [ ...action.groups ]
+      const userGroupObj = {}
+      userGroupList.forEach(group => {
+        userGroupObj[group.id] = group
+      })
+      newState = { ...state }
+      newState.userGroups = { ...userGroupObj }
       return newState
     }
     default:

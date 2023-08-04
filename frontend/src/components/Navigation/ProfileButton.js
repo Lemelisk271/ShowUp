@@ -47,6 +47,9 @@ const ProfileButton = ({ user }) => {
         <li>{user.email}</li>
         <li><Link to='/groups'>View Groups</Link></li>
         <li><Link to='/events'>View Events</Link></li>
+        <div className='dropdown-line'></div>
+        <li><Link to='/groups/current'>My Groups</Link></li>
+        <div className='dropdown-line'></div>
         <li>
           <button onClick={logoutUser}>Log Out</button>
         </li>
