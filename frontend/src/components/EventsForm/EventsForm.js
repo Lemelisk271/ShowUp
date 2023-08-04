@@ -22,9 +22,8 @@ const EventsForm = ({ formType, event }) => {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [updatePreviewImage, setUpdatePreviewImage] = useState({})
 
-  let today
-
   useEffect(() => {
+    let today
     const currentDate = new Date()
     const currentYear = currentDate.getFullYear()
     let currentMonth = currentDate.getMonth() + 1
@@ -43,7 +42,6 @@ const EventsForm = ({ formType, event }) => {
     if (currentMin < 10) {
       currentMin = `0${currentMin}`
     }
-    // eslint-disable-next-line
     today = `${currentYear}-${currentMonth}-${currentDay}T${currentHour}:${currentMin}`
     if (formType === 'create') {
       setStartDate(today)
@@ -104,6 +102,7 @@ const EventsForm = ({ formType, event }) => {
         setDescription(event.description)
       }
     }
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -275,7 +274,6 @@ const EventsForm = ({ formType, event }) => {
             type='datetime-local'
             value={startDate}
             onChange={e => setStartDate(e.target.value)}
-            min={today}
           />
         </div>
       </div>
@@ -288,7 +286,6 @@ const EventsForm = ({ formType, event }) => {
             type='datetime-local'
             value={endDate}
             onChange={e => setEndDate(e.target.value)}
-            min={today}
           />
         </div>
       </div>
