@@ -9,8 +9,6 @@ const GroupsManage = () => {
   const groups = Object.values(useSelector(state => state.groups.userGroups))
   const [isLoaded, setIsLoaded] = useState(false)
 
-  console.log(groups)
-
   useEffect(() => {
     const getUserGroups = async () => {
       await dispatch(fetchUserGroup())
@@ -28,7 +26,7 @@ const GroupsManage = () => {
       <div className='groupsManage-main'>
         {isLoaded ? (
           groups.map(group => (
-            <GroupListItem key={group.id} group={group} />
+            <GroupListItem key={group.id} group={group} member={true} />
           ))
         ):(
           <h1>Loading</h1>
