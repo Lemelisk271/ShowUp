@@ -199,6 +199,8 @@ const EventsForm = ({ formType, event }) => {
     }
   }
 
+  if (!currentGroup.id) history.push('/')
+
   return (
     <form className='eventForm' onSubmit={handleSubmit}>
       {formType === 'create' ? (
