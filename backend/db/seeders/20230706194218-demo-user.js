@@ -4,28 +4,45 @@
 
 const { User } = require('../models')
 const bcrypt = require('bcryptjs')
+const { fakerEN_US: faker } = require('@faker-js/faker')
 
 let options = {}
 if (process.env.NOD_ENV === 'production') {
   options.schema = process.env.SCHEMA
 }
 
-const names = ['Zach Smith', 'Emma Anema', 'Izolda Spellmeyer', 'Anwar Miyata', 'Davit Lange', 'Sawney Klimek', 'Manda Audley', 'Elisabeth Salinas', 'Haroun Prinz', 'Solveig Thomas', 'Urbain Ivankov', 'Hippolyte Richards', 'Madlenka Hirsch', 'Dagmar Chaudhuri', 'Zaur Leslie', 'Gord Albero', 'Tanner Kaube', 'Trophimos Krall', 'Kasih Dirchs', 'Gamila Harrison', 'Demo User']
+const userSeeds = [{
+  firstName: "Demo",
+  lastName: "User",
+  email: "duser@showup.io",
+  username: "duser",
+  hashedPassword: bcrypt.hashSync('password')
+}]
 
-const userSeeds = []
+const createRandomUser = () => {
+  const firstName = faker.person.firstName()
+  const lastName = faker.person.lastName()
+  const email = faker.internet.email({ firstName, lastName })
 
-names.forEach(name => {
-  name = name.split(" ")
-  const [firstName, lastName] = name
-  const obj = {
-    firstName: firstName,
-    lastName: lastName,
-    email: `${firstName[0].toLowerCase()}${lastName.toLowerCase()}@showup.io`,
+  return {
+    firstName,
+    lastName,
+    email,
     username: `${firstName[0].toLowerCase()}${lastName.toLowerCase()}`,
     hashedPassword: bcrypt.hashSync('password')
   }
-  userSeeds.push(obj)
-})
+}
+
+let users = 99
+
+if (process.env.NODE_ENV === 'production') {
+  users = 29
+}
+
+for (let i = 0; i < users; i++) {
+  let user = createRandomUser()
+  userSeeds.push(user)
+}
 
 module.exports = {
   async up (queryInterface, Sequelize) {
