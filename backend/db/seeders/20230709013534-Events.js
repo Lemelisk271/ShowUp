@@ -51,8 +51,8 @@ module.exports = {
         type: types[Math.floor(Math.random() * 2)],
         capacity: randomInt(100, 2000),
         price: parseFloat(randomPrice()),
-        startDate: new Date(`2023-09-${numText}T12:00:00`),
-        endDate: new Date(`2023-09-${numText}T14:00:00`)
+        startDate: new Date(`2023-11-${numText}T12:00:00`),
+        endDate: new Date(`2023-11-${numText}T14:00:00`)
       }
 
       eventSeeds.push(obj)
